@@ -57,7 +57,7 @@
       Call RxCanGo(NGas)
 
       Do RxNo=1,RxInfo(0)
-         If (IncludeRx(RxNo)) Then
+         If (IncludeRx(RxNo).EQ.1) Then
             Call  FindNmax(RxNo,NGas)
             If (GoVal(RxNo).EQ.2 .OR. GOVal(RxNo).EQ.3) Then
                Call MakeTinyStep(RxNo,NGas)
