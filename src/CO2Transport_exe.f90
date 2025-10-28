@@ -38,8 +38,7 @@
 !-Start----------------------------------------------------------------------
    
    ! This is the path to your working folder
-   MainPath="C:\Users\baard\Dropbox\Scale Consult\Projects\2024\SC2420 Equinor CO2 transport model\08 Model\"
-   
+   MainPath="../datafiles/"
    
    InputFileName=trim(MainPath) // "CalcInput.dat"
    InputFileNum=37
