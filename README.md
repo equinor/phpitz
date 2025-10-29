@@ -23,3 +23,18 @@ cd build
 cmake -G "NMake Makefiles" -DCMAKE_Fortran_COMPILER=ifx -DCMAKE_Fortran_FLAGS="/Qmkl" ..
 nmake
 ```
+
+## Build on Linux with gfortran
+
+Here is one way to build it for Linux using gfortran:
+
+```
+mkdir build
+cd build
+cmake -DCMAKE_EXE_LINKER_FLAGS="-llapack -lblas" -DCMAKE_Fortran_FLAGS="-std=legacy -ffree-line-length-none" ..
+make
+```
+
+for now there might be some manual patches needed in the source code:
+- CO2phaseReactions.f90 line 60 - add .NE.0
+- Pitzer_Init.f90 in Function PitzTfunc (line 263-315): change signature and ipmlementation from Par to ParArray
