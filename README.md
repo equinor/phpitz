@@ -23,6 +23,24 @@ cd build
 cmake -G "NMake Makefiles" -DCMAKE_Fortran_COMPILER=ifx -DCMAKE_Fortran_FLAGS="/Qmkl" ..
 nmake
 ```
+## Build on Ubuntu with Intel Fortran compiler
+
+Here is one way to build it on Ubuntu with the Intel Fortran essentials in a dev container (eg GitHub Codespaces):
+
+```
+sudo apt update
+sudo apt upgrade
+wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | sudo tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
+echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
+sudo apt update
+sudo apt install intel-fortran-essentials
+
+mkdir build
+cd build
+. /opt/intel/oneapi/setvars.sh
+cmake -DCMAKE_Fortran_COMPILER=ifx -DCMAKE_EXE_LINKER_FLAGS="-qmkl" ..
+make
+```
 
 ## Build on Linux with gfortran
 
