@@ -18,8 +18,8 @@ Here is one way to build for Windows:
 - From Intel oneAPI command prompt
 
 ```
-mkdir build_windows
-cd build_windows
-cmake -DCMAKE_Fortran_COMPILER=ifx -DCMAKE_Fortran_FLAGS="/Qmkl" ..
+mkdir build
+cd build
+cmake -G "NMake Makefiles" -DCMAKE_Fortran_COMPILER=ifx -DCMAKE_Fortran_FLAGS="/Qmkl" ..
 nmake
 ```
