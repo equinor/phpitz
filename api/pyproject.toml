@@ -1,0 +1,10 @@
+﻿[project]
+name = "phphitz-api"
+version = "0.1.0"
+description = "A fastapi service for PHPhitz"
+authors = [{ name = "CCS Data & Digital", email = "fg_CCS_Data_Digital@equinor.com" }]
+requires-python = ">=3.11,<3.14"
+dependencies = [
+    "fastapi",
+    "pydantic-settings>=2.10.1,<3.0.0"
+]
