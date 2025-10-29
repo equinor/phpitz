@@ -7,7 +7,7 @@ from contextlib import chdir
 
 app = FastAPI()
 TEMPLATE = """
- 100           20 
+ {pressure}           {temperature} 
 CO2
  {co2}        0 
 H2O
@@ -43,12 +43,13 @@ S8
  1 
  0 
  1 
- 100           20"""
+ {pressure}           {temperature} 
+"""
 
 
 @app.get("/")
 async def read_root():
-    return {"message": "Hello, World!"}
+    return {"message": "running server"}
 
 
 class Concentrations(BaseModel):
@@ -65,16 +66,28 @@ class Concentrations(BaseModel):
     n2: float = Field(default=0)
 
 
+class SimulationRequest(BaseModel):
+    temperature: int
+    pressure: int
+    concentrations: Concentrations
+
+
 @app.post("/api/run")
-async def calculate(input_concs: Concentrations):
+async def calculate(simulationRequest: SimulationRequest):
     runfolder = "/Users/LPHA/GitProjects/phpitz/build"
-    input_concs = input_concs.model_dump()
-    input_concs = {key: val / 1000000 for key, val in input_concs.items()}
-    input_concs["co2"] = 1000000 - sum(input_concs.values())
+    result = simulationRequest.model_dump()
+    concentrations = result["concentrations"]
+    concentrations["co2"] = 1000000 - sum(concentrations.values())
 
     with chdir(runfolder):
         with open("../datafiles/CalcInput.dat", "w") as fh:
-            fh.write(TEMPLATE.format(**input_concs))
+            fh.write(
+                TEMPLATE.format(
+                    **concentrations,
+                    pressure=result["pressure"],
+                    temperature=result["temperature"],
+                )
+            )
 
         result = subprocess.run(
             "./CO2phaseReactions", text=True, stdout=subprocess.PIPE
