@@ -31,7 +31,7 @@ COPY api /work/api
 RUN cd api && \
     pip install .
 
-ENV RUN_FOLDER=/work/src/build
+ENV RUN_FOLDER=/work/src
 USER 1001
 EXPOSE 8008
 
