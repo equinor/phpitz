@@ -1,7 +1,7 @@
 [project]
-name = "phphitz-api"
+name = "phpitz-api"
 version = "0.1.0"
-description = "A backend service for phPhitz"
+description = "A backend service for phpitz"
 authors = [{ name = "CCS Data & Digital", email = "fg_CCS_Data_Digital@equinor.com" }]
 requires-python = ">=3.11, <3.14"
 dependencies = [
