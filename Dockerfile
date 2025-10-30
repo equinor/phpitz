@@ -1,6 +1,8 @@
 ﻿FROM intel/fortran-essentials
 COPY src work/src
 COPY datafiles work/datafiles
+RUN chown -R 1001:1001 work/datafiles && chmod -R 755 work/datafiles
+
 COPY CMakeLists.txt work/
 WORKDIR /work
 
@@ -12,6 +14,7 @@ RUN cd src && \
 
 # add compiled program to path
 ENV PATH="/work/src/build:$PATH"
+RUN chown -R 1001:1001 /work/src/build && chmod -R 777 /work/src/build
 
 RUN add-apt-repository ppa:deadsnakes/ppa && \
     apt update && \
