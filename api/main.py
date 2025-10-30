@@ -1,4 +1,4 @@
-from re import sub
+import os
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
 
@@ -6,6 +6,9 @@ import subprocess
 from contextlib import chdir
 
 app = FastAPI()
+
+
+RUNFOLDER = os.getenv("RUN_FOLDER", ".")
 TEMPLATE = """
  {pressure}           {temperature} 
 CO2
@@ -74,13 +77,12 @@ class SimulationRequest(BaseModel):
 
 @app.post("/api/run")
 async def calculate(simulationRequest: SimulationRequest):
-    runfolder = "/Users/LPHA/GitProjects/phpitz/build"
     result = simulationRequest.model_dump()
     concentrations = result["concentrations"]
     concentrations["co2"] = 1000000 - sum(concentrations.values())
 
-    with chdir(runfolder):
-        with open("../datafiles/CalcInput.dat", "w") as fh:
+    with chdir(RUNFOLDER):
+        with open("../../datafiles/CalcInput.dat", "w") as fh:
             fh.write(
                 TEMPLATE.format(
                     **concentrations,
