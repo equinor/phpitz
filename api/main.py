@@ -91,9 +91,7 @@ async def calculate(simulationRequest: SimulationRequest):
                 )
             )
 
-        result = subprocess.run(
-            "./CO2phaseReactions", text=True, stdout=subprocess.PIPE
-        )
+    result = subprocess.run("CO2Transport", text=True, stdout=subprocess.PIPE)
 
     result = result.stdout.strip()
     return result
