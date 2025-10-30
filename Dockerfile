@@ -1,5 +1,7 @@
 ﻿FROM intel/fortran-essentials
-COPY . work
+COPY src work/src
+COPY datafiles work/datafiles
+COPY CMakeLists.txt work/
 WORKDIR /work
 
 RUN cd src && \
@@ -7,6 +9,9 @@ RUN cd src && \
     cd build && \
     cmake -DCMAKE_Fortran_COMPILER=ifx -DCMAKE_EXE_LINKER_FLAGS="-qmkl" /work && \
     make
+
+# add compiled program to path
+ENV PATH="/work/src/build:$PATH"
 
 RUN add-apt-repository ppa:deadsnakes/ppa && \
     apt update && \
@@ -17,6 +22,8 @@ ENV PYTHONUNBUFFERED=1
 
 RUN python3.12 -m venv /opt/server_env
 ENV PATH="/opt/server_env/bin:$PATH"
+
+COPY api /work/api
 
 RUN cd api && \
     pip install .
