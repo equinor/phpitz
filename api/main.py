@@ -82,7 +82,7 @@ async def calculate(simulationRequest: SimulationRequest):
     concentrations["co2"] = 1000000 - sum(concentrations.values())
 
     with chdir(RUNFOLDER):
-        with open("../../datafiles/CalcInput.dat", "w") as fh:
+        with open("../datafiles/CalcInput.dat", "w") as fh:
             fh.write(
                 TEMPLATE.format(
                     **concentrations,
@@ -91,7 +91,7 @@ async def calculate(simulationRequest: SimulationRequest):
                 )
             )
 
-    result = subprocess.run("CO2Transport", text=True, stdout=subprocess.PIPE)
+        result = subprocess.run("CO2Transport", text=True, stdout=subprocess.PIPE)
 
     result = result.stdout.strip()
     return result
