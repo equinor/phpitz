@@ -19,7 +19,7 @@
 ! PARAMETERS:  ai,bi    critical parameters for the EOS
 !
 ! Created:     2016.06.26  Baard Kaasa www.scalesim.no
-! Updated:  
+! Updated:
 !**********************************************************************
       Use GlobVar
       Use EOS
@@ -40,7 +40,7 @@
 
       aci=0.d0 ; bi=0.d0 ; ai=0.d0 ; Cvpti=0.d0
 
-      
+
       If (EOS_Type.EQ."SRK" .OR. EOS_Type.EQ."PR") Then     ! Calculate from acentric factor and critical properties
          Do i=1,NoHC
             RTc=Reos*Tc(i)
@@ -53,13 +53,13 @@
 
 
       EndIf
-         
+
       Do i=1,NoHC
          IF (Tc(i).GT.0.d0) Then
 		      ai(i) = aci(i)*(1.d0 + EOSmi(i)*(1.d0-dsqrt(Temp/Tc(i))))**2
          EndIf
       EndDo
-      
+
 	   End SubRoutine EOSconst
 
 
@@ -98,7 +98,7 @@
 !         HV_Lambda=dlog(2.d0)
 
       EndIf
-      
+
 ! Calculate delta 1 and 2. From Michelsen/Mollerup, Thermodynamic models: Fundamentals and computational aspects, 2nd ed, 2007, page75
       Delta1=0.5d0*(cpar + 1.d0 + dsqrt((cpar+1.d0)**2 + 4.d0*cpar))
       Delta2=0.5d0*(cpar + 1.d0 - dsqrt((cpar+1.d0)**2 + 4.d0*cpar))
@@ -132,7 +132,7 @@
 ! PARAMETERS:  w = acentric factor
 !
 ! Created:     2016.06.26  Baard Kaasa www.scalesim.no
-! Update log:  
+! Update log:
 !**********************************************************************
       Use EOS
 

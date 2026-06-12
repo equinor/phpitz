@@ -9,12 +9,12 @@
 !                 pHNewton - Special version of Newton routine for pH iteration using alkalinity
 !
 !****************************************************************************
-   
-   
-   
 
 
-   
+
+
+
+
    SubRoutine pHNewton(funcd,x1,x2,xacc,root)
 !****************************************************************************
 !  SUBROUTINE  :  pHNewton
@@ -31,14 +31,14 @@
    Implicit None
 
    External funcd
-   
+
 ! Call variables
    Double Precision x1,x2,xacc,root
-   
+
 ! Parameters
    Integer, Parameter :: Maxit=100
    Double Precision, Parameter :: MaxStep=2.d0
-   
+
 ! Local variables
    Integer j
    Double Precision F,dF,dx,dxold,xL,xH
@@ -47,17 +47,17 @@
    xH=x2
 
    If (root.LE.xL .OR. root.GE.xH) root=(xL+xH)/2.d0  ! Unless root is within bracketed limits - give it a start estimate
-   
+
    dxold=xH-xL
    dx=dxold
-   
+
    Call funcd(root,F,dF)
-   
+
    Do j=1,Maxit
       If (((root-XH)*dF-F)*((root-XL)*dF-F).GE.0.d0 .OR. dAbs(2.d0*F).GT.dAbs(dxold*dF)) Then   ! Check if step is outside limits or progress is to slow
 
          dxold=dx
-         
+
          If (F.GT.0.d0) Then              ! Make sure that bisection step goes in correct direction
             dx=-0.5d0*(root-XL)
          Else
@@ -67,18 +67,18 @@
          dxold=dx
          dx=-F/dF
       EndIf
-      
+
       If (dabs(dx).GT.MaxStep) Then       ! Reduce step if it is too large
          dx=dx*MaxStep/dabs(dx)
       EndIf
-      
+
       root=root+dx                        ! Calculate new solution
-   
+
       If (dAbs(dx).LT.xacc) Return     ! Found a solution that is good enough
 
       CALL Funcd(root,F,dF)            ! Calculate new solution
 
-       
+
       If(F.LT.0.d0) Then               ! Set corrected upper/lower limit
          XL=root
       ElseIf (F.GT.0.d0) Then
@@ -86,42 +86,42 @@
       Else
          Return                        ! BKaa: Found the solution - very seldom
       EndIf
-      
+
    EndDo
-   
+
    End
-   
-   
+
+
       SubRoutine SolveMat(a,b,n,np)
 !**********************************************************************
 !  Name:       SolveMat
 !----------------------------------------------------------------------
 !  Descr:      Solves the matrix of SR-derivatives
-!  Called by:  
-!  Calls:      
+!  Called by:
+!  Calls:
 !----------------------------------------------------------------------
-!  Variables: 
+!  Variables:
 !
 !**********************************************************************
       Use GasRx
       Implicit None
-      
+
 ! Call variables
       Integer np
       Double Precision a(np,np),b(np),d
       Integer n,indx(np),Code
 
- !-----Start------------------------------------------------------------    
+ !-----Start------------------------------------------------------------
 
       CALL LUdecomp(a,n,np,indx,d,Code)
       CALL LUbacksub(a,n,np,indx,b)
 
    End SubRoutine SolveMat
-   
 
 
 
-   
+
+
    SubRoutine LUdecomp(a,n,np,indx,d,Code)
 !****************************************************************************
 !  SUBROUTINE  :  LUdecomp
@@ -149,14 +149,14 @@
 
 !--Start---------------------------------------------------------------
    d=1.d0 ; Code=0
-      
+
       Do i=1,n
          aamax=0.d0
          Do j=1,n
             If (DABS(a(i,j)).GT.aamax) aamax=DABS(a(i,j))
          EndDo
 
-         If (aamax.EQ.0.d0) Then 
+         If (aamax.EQ.0.d0) Then
             Code=1
     !        Return
              Write(*,*) 'singular matrix in ludcmp'
@@ -204,7 +204,7 @@
          EndIf
       EndDo
 
-      
+
    End
 
    SubRoutine LUbacksub(a,n,np,indx,b)
@@ -219,7 +219,7 @@
 !
 !****************************************************************************
    Implicit None
-      
+
 ! Call variables
    Integer n,np,indx(n)
    Double Precision a(np,np),b(np)
@@ -252,7 +252,7 @@
       EndDo
 
    End
-   
+
    SubRoutine CubEqSolve(B,C,D,X,j)
 !****************************************************************************
 !  SUBROUTINE  :  CubRootSolve
@@ -260,7 +260,7 @@
 !                 Uses Cardano's Goniometric Finite method
 !  VARIABLES   :  B,C,D - constants in cubic equation
 !                 x1,x2,x3 - roods
-!                 j=1 Only one real root X1 (X2=X3=0) 
+!                 j=1 Only one real root X1 (X2=X3=0)
 !                 J=3 Three real roots X1 <= X2 <= X3
 !
 !  CREATED     :  2016.06.28  Baard Kaasa www.scalesim.no
@@ -268,30 +268,30 @@
 !
 !****************************************************************************
    Implicit None
-   
+
 ! Call variables
    Double Precision B,C,D
    Double Precision X(3)
    Integer j
-   
+
    Double Precision CubRt
-   
+
 ! Local variables
    Double Precision P,Q,R,Y1,Y2,Y3,R1
 !--Start------------------------------
    X=0.d0 ; J=3
-   
+
    P=(3.D0*C-B**2)/9.D0
    Q=B**3/27.D0-B*C/6.D0+D/2.D0
    R=Q**2 + P**3
-   
+
    If (R.GT.0.d0) Then                 ! Only one real solutions J=1
       J=1
       R1=dsqrt(R)
       Y1=CubRt(-Q+R1) + CubRt(-q-R1)
       Goto 20
-   EndIf   
-   
+   EndIf
+
    If (R.EQ.0.d0) Then                 ! Three roots - two of them equal - very seldom
       Y2=CubRt(Q)
       Y1=-2.d0*Y2
@@ -299,21 +299,21 @@
       If (Q.LT.0.d0) Call SwapNum(Y1,Y3)
       Goto 20
    EndIf
-   
+
    Y3=2.d0*dsqrt(-P)*dcos(dacos(-Q/dsqrt(-P**3))/3.d0)   ! Three different real roots
    R1=dsqrt(Y3**2 - 12.d0*P - 4.d0*Y3**2)
    Y2=(-Y3 + R1)/2.d0
    Y1=(-Y3 - R1)/2.d0
-   
+
 20 X(1)=Y1 - B/3.d0                      ! First root is calculated
    If (J.EQ.3) Then                    ! Other roots calculated if real
       X(2)=Y2 - B/3.d0
       X(3)=Y3 - B/3.d0
    EndIf
-   
+
    End
-   
-   
+
+
    Double Precision Function CubRt(X)
 !****************************************************************************
 !  SUBROUTINE  :  3rdRoot
@@ -326,7 +326,7 @@
 !
 !****************************************************************************
    Implicit None
-   
+
 ! Call variables
    Double Precision X
 ! Local variables
@@ -341,7 +341,7 @@
       CubRT=0.d0
    EndIf
    End
-   
+
    Subroutine SwapNum(X,Y)
 !****************************************************************************
 !  SUBROUTINE  :  SwapNum
@@ -358,7 +358,7 @@
    Help=X
    X=Y
    Y=Help
-   
+
    End
-   
-   
+
+

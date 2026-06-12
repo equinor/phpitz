@@ -19,10 +19,10 @@
 !
 ! CALLS:       None
 !
-! PARAMETERS:  
+! PARAMETERS:
 !
 ! Created:     20.09.2010 BKaa
-! Update log:  
+! Update log:
 !**********************************************************************
       Use EOS
       Implicit None
@@ -33,14 +33,14 @@
 
       Integer i
 !-----Start--------------------------------------------------
-      
+
 !      Call CPA_setup(nz)
       Call EOSabc(Ni,phase)
       Call FindVol(Ni,ZF,phase)
 
    End
 
-   
+
       SubRoutine EOSabc(Ni,phase)
 !**********************************************************************
 ! DESC:        Calculates the a,b and c constants used in the EOS
@@ -52,7 +52,7 @@
 ! PARAMETERS:  EOS_a, EOS_b, EOS_c
 !
 ! Created:     20.09.2010 BKaa
-! Update log:  
+! Update log:
 !**********************************************************************
       Use EOS
       Implicit None
@@ -75,39 +75,39 @@
 
       EOS_B=Dot_Product(Ni(1:NoHC),bi(1:NoHC))
       EOS_C=Dot_Product(Ni(1:NoHC),cPen(1:NoHC))
-      
-      
-      
+
+
+
       Do i=1,NoHC
          Do j=1,NoHC
             EOS_A=EOS_A + dsqrt(ai(i)*ai(j))*Ni(i)*Ni(j)*(1.d0-kij(i,j))
          EndDo
       EndDo
-   
-      
-      
+
+
+
       If (EOS_Type.EQ."VPT") EOS_Cvpt=Dot_Product(Ni(1:NoHC),Cvpti(1:NoHC))
-      
+
       Phase_A(phase)=EOS_A
       Phase_B(phase)=EOS_B
       Phase_C(phase)=EOS_C
       Phase_Cvpt(phase)=EOS_Cvpt
-      
+
       End SubRoutine
 
-   
+
       SubRoutine FindVol (Ni,ZF,Phase)
 !**********************************************************************
-! DESC:        Solves the volume of the EOS 
+! DESC:        Solves the volume of the EOS
 !
 ! CALLED BY:   -
 !
 ! CALLS:       None
 !
-! PARAMETERS:  
+! PARAMETERS:
 !
 ! Created:     10.03.2012 BKaa
-! Update log:  
+! Update log:
 !**********************************************************************
    Use EOS
    Use GlobVar
@@ -124,9 +124,9 @@
    Double Precision n,RT,V
    Double Precision Fug_liq(NoHC),Fug_gas(NoHC)
 !--Start--------------------------------------------------
-   
+
    n=Sum(Ni) ; RT=Reos*Temp
-  
+
    If (.True.) Then
       Call SolveQubic(Ni,X,J)
    Else
@@ -134,12 +134,12 @@
       Return
    EndIf
 
-   
+
    If (J.EQ.1) Then  ! Only one solution
       ZF=X(1)
-      
+
       V=ZF*n*Reos*Temp/Ptot
-      
+
       If (phase.eq.-1) Then
          If (V-1.75*EOS_b.LT.0.d0) Then   ! Determine if it is a "liquid" or "gas" type phase - this is just an estimate
             Phase=1
@@ -147,7 +147,7 @@
             Phase=2
          EndIf
       EndIf
-      
+
    Else              ! Two solutions
       If (Phase.EQ.1) Then ! Want the liquid root
          ZF=x(1)
@@ -155,25 +155,25 @@
          ZF=X(3)
       Else  ! Determine most stable root
          Lev=2   ! Calculation of fugacity, but not derivatives
-         Call CalcFug(Lev,Ni,X(1),Fug_liq) 
+         Call CalcFug(Lev,Ni,X(1),Fug_liq)
          Call CalcFug(Lev,Ni,X(3),Fug_gas)
-      
+
          If (GibbsE(Ni,Fug_liq).LE.GibbsE(Ni,Fug_gas)) Then
             ZF=X(1)
 !            Phase=1
          Else
             ZF=X(3)
 !            Phase=2
-         EndIF     
+         EndIF
       EndIf
    EndIf
-   
+
    ZF=ZF - EOS_C/n*Ptot/(Reos*Temp)
-   
-   
+
+
    End
-   
-   
+
+
    SubRoutine VolSolve(Ni,Phase,ZF)
 !**********************************************************************
 ! DESC:        Solves the volume of an  EOS
@@ -182,21 +182,21 @@
 !
 ! CALLS:       None
 !
-! PARAMETERS:  
+! PARAMETERS:
 !
 ! Created:     2016.06.27 Baard Kaasa www.scalesim.no
-! Update log:  
+! Update log:
 !**********************************************************************
    Use EOS
    Use GlobVar
    Implicit None
-   
-! Call variables   
+
+! Call variables
    Integer Phase,Lev
    Double Precision Ni(NoHC),ZF
 ! Functions
    Double Precision GibbsE
-   
+
 ! Local variables
    Double Precision n,nRT,Tred,Vgas,Vliq
    Double Precision Gibbs_Liq,Gibbs_Gas,ZF_liq,ZF_gas,Fug_liq(NoHC),Fug_gas(NoHC)
@@ -205,19 +205,19 @@
 !--Start------------------------------------------------------
    n=sum(Ni)
    nRT=n*Reos*Temp
-   
+
    Tred=n*Temp/Dot_Product(Ni(1:NoHC),Tc(1:NoHC))
 
    Vgas=nRT/Ptot                   ! Gas estimate - ideal solution
    Vliq=EOS_B*(2.d0 + Tred)/2.d0    ! Liquid estimate - a little larger than EOS_B
-  
-   
+
+
 ! If phase is known - calculte the solution
    If (Phase.EQ.1) Then             ! Know that it is liquid and want liquid root
       Call VOLit(Ni,Vliq,1)
       ZF=Ptot*Vliq/(nRT)
       Return
-      
+
    ElseIf (Phase.EQ.2) Then         ! Know that it is gas and want gas root
       Call VOLit(Ni,Vgas,2)
 
@@ -228,25 +228,25 @@
       ZF=Ptot*Vgas/(nRT)
       Return
    EndIf
-   
+
 
 ! Phase is not known - need to check both
    Call VOLit(Ni,Vliq,1)         ! Calculate liquid solution
-   Call VOLit(Ni,Vgas,2)         ! Calculate gas solution   
-    
+   Call VOLit(Ni,Vgas,2)         ! Calculate gas solution
 
-      
+
+
    If (dabs((Vgas-Vliq)/Vgas).LT.1.d-4) Then        ! Two identical solutions found - i.e. there was only one solution
       Vgas=(Vgas+Vliq)/2.d0
       ZF=Ptot*Vgas/(nRT)
-      
+
       If (Vgas-1.75*EOS_b.LT.0.d0) Then   ! Determine if it is a "liquid" or "gas" type phase - this is just an estimate
          Phase=1
       Else
          Phase=2
       EndIf
       Return
-   EndIf   
+   EndIf
 
 ! Have found two solutions - check if both are valid
 
@@ -258,18 +258,18 @@
       ElseIf (Vliq.LT.0.d0) Then    ! Did not find a liq solution - gas solution is correct
          ZF=Ptot*Vgas/(nRT)
          Phase=2
-      EndIf       
+      EndIf
       Return
    EndIf
-            
+
 ! Have two valid solutions, must determine the correct (Lowst Gibbs energy
    ZF_liq=Ptot*Vliq/(nRT)
    ZF_gas=Ptot*Vgas/(nRT)
    Lev=2 ! Calculate fugacity, but not derivative
-   Call CalcFug(Lev,Ni,ZF_liq,Fug_liq) 
-   Call CalcFug(Lev,Ni,ZF_gas,Fug_gas) 
+   Call CalcFug(Lev,Ni,ZF_liq,Fug_liq)
+   Call CalcFug(Lev,Ni,ZF_gas,Fug_gas)
    Gibbs_Liq=GibbsE(Ni,Fug_liq)
-   Gibbs_Gas=GibbsE(Ni,Fug_gas)   
+   Gibbs_Gas=GibbsE(Ni,Fug_gas)
 
    If (Gibbs_Liq.LE.Gibbs_Gas) Then    ! The liquid solution was correct
       ZF=ZF_liq
@@ -277,18 +277,18 @@
    Else                                ! The gas solution was correct
       ZF=ZF_gas
       Phase=2
-   EndIf   
-   
-   
+   EndIf
+
+
    End
-   
-   
+
+
    SubRoutine Volit(Ni,V,Phase)
    Use EOS
    Use GlobVar
    Use F_funcs
    Implicit None
-   
+
 ! Call variables
    Double Precision Ni(NoHC),V
    Integer Phase
@@ -297,33 +297,33 @@
    Double Precision, Parameter::dVkrit=1.d-4,Hkrit=1.d-4
    Double Precision Vmin,Vmax,n,RT,nRT
    Integer i,Lev
-   
+
    Double Precision H,dHdV,dV,dFdV,d2FDVV
 !--Start------------------------------------------------------
    Vmin=EOS_B
    Vmax=-1.d0
    Lev=1       ! Only volume derivatives
-   
+
    n=Sum(Ni(1:NoHC)) ;   RT=Reos*Temp ;     nRT=n*RT
-   
+
    Do i=1,Maxit
       Call EOS_F_func(Lev,Ni,V)
-      
+
       dFdV=dF_dV                   ! Total pressure contribution
       H=nRT/V - RT*dFdV - Ptot
-      
+
       d2FdVV=d2F_dVV
       dHdV=-nRT/V**2 - RT*d2FdVV
-         
+
       dV=-H/dHdV                          ! Calculate Newton step
-      
+
       If (Vmin*Vmax.GT.0.d0) Then         ! This can only occure after both upper and lower limit is set
          IF (dV.GT.2.d0*(Vmax-Vmin)) Then ! Have found a top point
             V=-1.d0
             Return
          EndiF
       EndIf
-         
+
       If (dHdV.GT.0.d0) Then              ! In 2 phase reqion corresponding to intermediate solution
          If (Phase.EQ.1 .OR. PHase.EQ.3) then
             Vmax=V
@@ -355,16 +355,16 @@
          V=V+dV                  ! Calculate new Volume
 !         write(*,'(I3,5F15.5)')i,H,V,dV
       EndIf
-      
-      
+
+
       If (dabs(dV/V).LT.dVkrit .AND. dabs(H).LT. Hkrit) Then
          Return
       EndIf
    EndDo
    V=-2.d0
    End
-   
-   
+
+
    SubRoutine SolveQubic(Ni,X,J)
 !**********************************************************************
 ! DESC:        Solves the volume of a cubic EOS
@@ -373,10 +373,10 @@
 !
 ! CALLS:       None
 !
-! PARAMETERS:  
+! PARAMETERS:
 !
 ! Created:     2016.06.27 Baard Kaasa www.scalesim.no
-! Update log:  
+! Update log:
 !**********************************************************************
    Use EOS
    Use GlobVar
@@ -389,19 +389,19 @@
 !--Start------------------------------------------------------
    n=sum(Ni)
    nRT=n*Reos*Temp
-   
+
    BB=EOS_B*Ptot/nRT
    AA=EOS_A*ptot/nRT**2
-      
+
    RR=BB*(Delta1+Delta2) - BB - 1.d0
    SS=Delta1*Delta2*BB**2 - (Delta1+Delta2)*(BB+BB**2) + AA
    TT=-Delta1*Delta2*(BB**2 + BB**3) - AA*BB
-   
+
    Call CubEqSolve(RR,SS,TT,X,J)
-   
+
    End
-   
-   
+
+
    Double Precision Function GibbsE(Ni,Fug)
 !****************************************************************************
 !  SUBROUTINE  :  GibbsE
@@ -416,7 +416,7 @@
    Implicit None
 ! Call variables
    Double Precision Ni(NoHC),Fug(NoHC)
-   
+
 ! Local variables
    Double Precision Sum
    Integer i
@@ -430,5 +430,4 @@
    EndDo
    GibbsE=Sum
    End
-   
-   
+

@@ -16,32 +16,32 @@
 !****************************************************************************
 !  SUBROUTINE  :  CheckFile
 !  DESCRIPTION :  Checks if a file is present
-!  VARIABLES   :  FileName - File to be checked 
+!  VARIABLES   :  FileName - File to be checked
 !
 !  CREATED     :  2013.05.04  Baard Kaasa www.scalesim.no
 !  CHANGED     :
-!****************************************************************************    
+!****************************************************************************
    Use Path
    Use ErrMSGS
    Implicit None
-   
+
 ! Local variables
    Logical Exists
-!--Start----------------------------------------------------''---------------   
+!--Start----------------------------------------------------''---------------
    Info=0
    Inquire (FILE=FileName,Exist=Exists)   ! Checks if File exists. Variables Exists set to true or false
-      
+
    If (.not.Exists) Then
       Info=1
       ErrMSG='File does not exist: '
       ErrMSG=ErrMSG(1:Len_Trim(ErrMSG)) // FileName
    EndIf
-      
+
    End
 
-   
-   
-   
+
+
+
    SubRoutine FindStart(InFile)
 !****************************************************************************
 !  SUBROUTINE  :  FindStart
@@ -50,17 +50,17 @@
 !
 !  CREATED     :  2013.05.04  Baard Kaasa www.scalesim.no
 !  CHANGED     :
-!****************************************************************************    
+!****************************************************************************
 
 ! Call variables
    Integer InFile
-      
+
 ! Local variables
    Character Dummy*25
    Logical FoundStart
-!--Start-------------------------------------------------------------------  
+!--Start-------------------------------------------------------------------
    Rewind(InFile)
-   
+
    FoundStart=.False.
 
    Do while (.NOT.FoundStart)
@@ -70,9 +70,9 @@
          FoundStart=.True.
       EndIf
    EndDo
-   
+
 
    End
-   
-   
-   
+
+
+
