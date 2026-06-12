@@ -45,6 +45,7 @@
          Do i=1,NoHC
             RTc=Reos*Tc(i)
             EOSmi(i)  = EOSmfunc(Acent(i))
+
             IF (Pc(i).GT.0.d0) Then
                aci(i) = Omega_A*(RTc)**2/Pc(i)
                bi(i)  = Omega_B*(RTc)/Pc(i)

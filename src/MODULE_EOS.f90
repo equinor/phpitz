@@ -10,8 +10,6 @@
 
 MODULE EOS
    Use Par
-!   Implicit None
-   Save
 
    Double Precision, Parameter :: Reos=83.14473d0    ! Gas constant for EOS. Units = [cm3 bar/K mole]. Gives volume in cm3.
 !  Double Precision, Parameter :: Reos=83.147295d0    ! Gas constant for EOS. Units = [cm3 bar/K mole]. Gives volume in cm3.
@@ -44,7 +42,6 @@ MODULE EOS
 
    MODULE F_funcs
       Use Par
-      Implicit None
 
       Double Precision F
       Double Precision dF_dni(NoHC),d2F_dninj(NoHC,NoHC)

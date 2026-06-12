@@ -37,7 +37,7 @@
 !-----Start-------------------------------------------------------------------
 
 ! Start by setting all parameters to zero. Only read parameters will have value.
-      PitzAlpha=0.d0
+      PitzAlpha=0.d0  ! Double Precision parameters
       BetaCC   =0.d0
       CphiCC   =0.d0
       PsiCC    =0.d0
@@ -45,14 +45,16 @@
       LambCC   =0.d0
       KsiCC    =0.d0
 
-      BetaCCEq   =0
+      BetaCCEq   =0     ! Integer parameters
       CphiCCEq   =0
       PsiCCEq    =0
       ThetCCEq   =0
       LambCCEq   =0
       KsiCCEq    =0
 
-      PitzAlpha(1,1:NoAq,1:NoAq)=2.0d0
+
+
+      PitzAlpha(1,1:NoAq,1:NoAq)=2.0d0 ! Default values - only those who are different are read in
       PitzAlpha(2,1:NoAq,1:NoAq)=0.0d0
 
       Do i=1,NoAq
@@ -85,12 +87,16 @@
                   BetaCC(FileNo-1,Indx1,Indx2,1:Npar)=Tpar(1:Npar)
                   BetaCCEq(FileNo-1,Indx1,Indx2)=Eqn
                EndDo
+
+
             ElseIf (FileNo.EQ.4) Then     ! Read C parameters
                Do i=1,Nspec
                   Read(InFile,*)Indx1,Indx2,(Tpar(k),k=1,Npar),Eqn
                   CphiCC(Indx1,Indx2,1:Npar)=Tpar(1:Npar)
                   CphiCCEq(Indx1,Indx2)=Eqn
                EndDo
+
+
 
             ElseIf (FileNo.EQ.5) Then     ! Read 3-ion interactions cc'a and caa'
                Do i=1,Nspec

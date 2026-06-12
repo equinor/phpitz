@@ -260,8 +260,8 @@
 !                 Uses Cardano's Goniometric Finite method
 !  VARIABLES   :  B,C,D - constants in cubic equation
 !                 x1,x2,x3 - roods
-!                 j=1 Only one real root X1 (X2=X3=0)
-!                 J=3 Three real roots X1 <= X2 <= X3
+!                 j=1 Only one Real root X1 (X2=X3=0)
+!                 J=3 Three Real roots X1 <= X2 <= X3
 !
 !  CREATED     :  2016.06.28  Baard Kaasa www.scalesim.no
 !  CHANGED     :
@@ -285,7 +285,7 @@
    Q=B**3/27.D0-B*C/6.D0+D/2.D0
    R=Q**2 + P**3
 
-   If (R.GT.0.d0) Then                 ! Only one real solutions J=1
+   If (R.GT.0.d0) Then                 ! Only one Real solutions J=1
       J=1
       R1=dsqrt(R)
       Y1=CubRt(-Q+R1) + CubRt(-q-R1)
@@ -300,13 +300,13 @@
       Goto 20
    EndIf
 
-   Y3=2.d0*dsqrt(-P)*dcos(dacos(-Q/dsqrt(-P**3))/3.d0)   ! Three different real roots
+   Y3=2.d0*dsqrt(-P)*dcos(dacos(-Q/dsqrt(-P**3))/3.d0)   ! Three different Real roots
    R1=dsqrt(Y3**2 - 12.d0*P - 4.d0*Y3**2)
    Y2=(-Y3 + R1)/2.d0
    Y1=(-Y3 - R1)/2.d0
 
 20 X(1)=Y1 - B/3.d0                      ! First root is calculated
-   If (J.EQ.3) Then                    ! Other roots calculated if real
+   If (J.EQ.3) Then                    ! Other roots calculated if Real
       X(2)=Y2 - B/3.d0
       X(3)=Y3 - B/3.d0
    EndIf
@@ -317,9 +317,9 @@
    Double Precision Function CubRt(X)
 !****************************************************************************
 !  SUBROUTINE  :  3rdRoot
-!  DESCRIPTION :  Calculates 3rd root of a real number
+!  DESCRIPTION :  Calculates 3rd root of a Real number
 !
-!  VARIABLES   :  X Input value - real number
+!  VARIABLES   :  X Input value - Real number
 !
 !  CREATED     :  2016.06.28  Baard Kaasa www.scalesim.no
 !  CHANGED     :  2017.09.29  BKaa - added check for zero

@@ -38,20 +38,22 @@
       Double Precision x1,x2
 !-----Start-------------------------------------------------------------------
 
-      x1=PitzAlpha(1,M,X)*sqrIS
-      x2=PitzAlpha(2,M,X)*sqrIS
+   x1=PitzAlpha(1,M,X)*sqrIS
+   x2=PitzAlpha(2,M,X)*sqrIS
 
-      If (p.EQ.0) Then
-         BMX=Beta0(M,X) + Beta1(M,X)*g(x1) + Beta2(M,X)*g(x2)
-      ElseIf (p.EQ.1) Then
-         BMX=(Beta1(M,X)*gp(x1) + Beta2(M,X)*gp(x2))/IS
-      ElseIf (p.EQ.2) Then
-         BMX=Beta0(M,X) + Beta1(M,X)*dexp(-x1) + Beta2(M,X)*dexp(-x2)
-      EndIf
+   If (p.EQ.0) Then
+      BMX=Beta0(M,X) + Beta1(M,X)*g(x1) + Beta2(M,X)*g(x2)
+   ElseIf (p.EQ.1) Then
+      BMX=(Beta1(M,X)*gp(x1) + Beta2(M,X)*gp(x2))/IS
+   ElseIf (p.EQ.2) Then
+      BMX=Beta0(M,X) + Beta1(M,X)*dexp(-x1) + Beta2(M,X)*dexp(-x2)
+   EndIf
 
    End
 
-      Double Precision Function g(x)
+
+
+   Double Precision Function g(x)
 !****************************************************************************
 !  SUBROUTINE  :  g
 !  DESCRIPTION :  Calculates g
@@ -60,15 +62,17 @@
 !  CREATED     :  2013.05.011  Baard Kaasa www.scalesim.no
 !  CHANGED     :
 !****************************************************************************
-      Double Precision x
+   Double Precision x
 !-----Start-------------------------------------------------------------------
-      If (x.EQ.0.d0) Then
-         g=0.d0
-      Else
-         g=2.d0*(1.d0 - (1.d0 + x)*dexp(-x))/x**2
-      EndIf
+   If (dabs(x).LT.1.d-15) Then
+      g=0.d0
+   Else
+      g=2.d0*(1.d0 - (1.d0 + x)*dexp(-x))/x**2
+   EndIf
 
-      End
+   End
+
+
 
       Double Precision Function gP(x)
 !****************************************************************************
@@ -81,7 +85,7 @@
 !****************************************************************************
       Double Precision x
 !-----Start-------------------------------------------------------------------
-      If (x.EQ.0.d0) Then
+      If (dabs(x).LT.1.d-15) Then
          gP=0.d0
       Else
          gP=-2.d0*(1.d0 - (1.d0 + x + 0.5d0*x**2)*dexp(-x))/x**2
@@ -120,7 +124,7 @@
 !****************************************************************************
 !  SUBROUTINE  :  Phi
 !  DESCRIPTION :  Calculates Phi
-!  VARIABLES   :  i and j are two ions of same sign in MultiScale numbering
+!  VARIABLES   :  i and j are two ions of same sign in ScaleSim numbering
 !                 p indicates if it is Phi(p=0), derivative (p=1) or for osmotic (p=2)
 !
 !  CREATED     :  2013.05.11  Baard Kaasa www.scalesim.no

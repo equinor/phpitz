@@ -77,13 +77,11 @@
       EOS_C=Dot_Product(Ni(1:NoHC),cPen(1:NoHC))
 
 
-
       Do i=1,NoHC
          Do j=1,NoHC
             EOS_A=EOS_A + dsqrt(ai(i)*ai(j))*Ni(i)*Ni(j)*(1.d0-kij(i,j))
          EndDo
       EndDo
-
 
 
       If (EOS_Type.EQ."VPT") EOS_Cvpt=Dot_Product(Ni(1:NoHC),Cvpti(1:NoHC))
@@ -134,7 +132,6 @@
       Return
    EndIf
 
-
    If (J.EQ.1) Then  ! Only one solution
       ZF=X(1)
 
@@ -168,7 +165,7 @@
       EndIf
    EndIf
 
-   ZF=ZF - EOS_C/n*Ptot/(Reos*Temp)
+   ZF=ZF !- EOS_C/n*Ptot/(Reos*Temp)
 
 
    End
@@ -200,7 +197,7 @@
 ! Local variables
    Double Precision n,nRT,Tred,Vgas,Vliq
    Double Precision Gibbs_Liq,Gibbs_Gas,ZF_liq,ZF_gas,Fug_liq(NoHC),Fug_gas(NoHC)
-   integer i
+   Integer i
 
 !--Start------------------------------------------------------
    n=sum(Ni)

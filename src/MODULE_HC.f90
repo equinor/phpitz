@@ -7,9 +7,6 @@
 
 MODULE HC
    Use Par
-   SAVE
-
-
 
 ! Variables
 
@@ -37,10 +34,15 @@ MODULE HC
    Integer, Parameter :: iHC_H2SO4=9
    Integer, Parameter :: iHC_HNO3=10
    Integer, Parameter :: iHC_S8=11
+   Integer, Parameter :: iHC_NH3=12
+   Integer, Parameter :: iHC_N2O=13
+   Integer, Parameter :: iHC_N2O4=14
+   Integer, Parameter :: iHC_NH4HSO4=15
 
 
+   Character HCNames(NoHC)*15
+   Character CompNames(NoComp)*15
 
-   Character HCNames(NoHC)*10
    Double Precision HCMw(NoHC)
    Integer HCIsSolvent(NoHC),HCType(NoHC)
 

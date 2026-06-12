@@ -6,12 +6,11 @@
 !************************************************************
 
 MODULE Eq
-   SAVE
 ! Parameters  ManualUpdate: Check that these constants are updated
-   Integer, Parameter :: NoEq=6              ! Number of equilibrim reactions in model
+   Integer, Parameter :: NoEq=11              ! Number of equilibrim reactions in model
    Integer, Parameter :: MaxSpecInEq=4       ! Maximum species involved in an equilibrium rx
    Integer, Parameter :: NRange=2
-   Integer, Parameter :: NGasSol=2           ! Number of gas/HC components that dissolve in water. Used to calculate Henrys constant.
+   Integer, Parameter :: NGasSol=4           ! Number of gas/HC components that dissolve in water. Used to calculate Henrys constant.
 
 ! Variables
    Integer Eq_Type(NoEq,0:NRange)            ! Which type of temperature equation used, and for NRange ranges
@@ -33,6 +32,11 @@ MODULE Eq
    Integer, Parameter :: Eqn_KHNO3=4
    Integer, Parameter :: Eqn_KH_H2SO4=5
    Integer, Parameter :: Eqn_KH_HNO3=6
+   Integer, Parameter :: Eqn_KH_NH3=7
+   Integer, Parameter :: Eqn_KNH4=8
+   Integer, Parameter :: Eqn_KHCO2=9
+   Integer, Parameter :: Eqn_K1CO2=10
+   Integer, Parameter :: Eqn_K2CO2=11
 
 
 

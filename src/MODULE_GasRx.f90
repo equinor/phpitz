@@ -5,35 +5,64 @@
 !************************************************************
 
 
-MODULE GasRx
 
-   Use Par
 
+   MODULE GasRx
+   Use dpDef
+   Use Par  ! Number of components etc
    Implicit None
 
-   Double PRecision, Parameter :: RxLim=1.d-15
 
-   Double Precision CompH(NoDefHC),CompS(NoDefHC)
-
-! Parameters needed to define reactions
-   Integer, Parameter :: MaxGasRx=20  ! ASsuming maximum 20 reactions
-   Integer, Parameter :: MaxCompInRx=10 !Assuming maximum 10 components in a reaction
-   Integer RxInfo(0:MaxGasRx)             ! 0=number of reactions, 1... is number of species in each reaction
-   Integer RxComp(MaxGasRx, MaxCompInRx)  ! Component number in each reaction
-   Integer RxCoef(MaxGasRx, MaxCompInRx)  ! Reaction coefficient
-   Integer CompRx(NoDefHC,MaxGasRx)       ! Coefficient in each reaction for each specie
+   Integer, Parameter :: ncomp  = 20
+   Integer, Parameter :: nelem  = 4
+   Integer, Parameter :: maxnRx = 12
 
 
-   Integer N_GasRxm,IncludeRxINP(MaxGasRx)
-
-   Double Precision dH(MaxGasRx),dS(MaxGasRx),dG(MaxGasRx),lnk(MaxGasRx)
-
-
-   Integer GoVal(MaxGasRx)
-   Double Precision dNMax(MaxGasRx,2)
-
-   Double Precision Q(MaxGasRx),dQQ(MaxGasRx,MaxGasRx)
-!   Double Precision D(MaxGasRx)
+! Thermo data
+   Real(dp) :: CompH(NoComp),CompS(NoComp)  ! Enthalpy and entropy for components
+   Real(dp) :: RxH(MaxnRx), RxS(maxnRx), RxG(maxnRx),RxlnK(maxnRx)
 
 
-End MODULE GasRx
+! Phase type constants
+   Integer, parameter :: GAS   = 1
+   Integer, parameter :: SOLID = 2
+
+
+! Component information
+   Character(len=12) :: comp_name(ncomp)
+   Integer :: CompType(NoComp)      ! PHASE: GAS=1, SOLID=2
+   logical  :: is_reactive(ncomp)
+
+! Reaction information
+   Integer :: nRx
+
+   Integer :: IncludeRx(0:maxnRx)
+   Real(dp) :: stoich(ncomp,maxnRx)
+
+
+!  real(dp) :: Ntot
+
+
+
+   End MODULE GasRx
+
+
+
+
+
+Module gibbs_solver
+!==============================================================================
+   Use dpDef
+
+   Integer, parameter  :: max_iter = 2000
+   Real(dp), parameter :: tol_conv = 1.0e-10_dp
+   Real(dp), parameter :: Nmin     = 1.0e-40_dp
+
+  ! Her kan vi ogås legge inn en kommentar
+
+End Module gibbs_solver
+
+
+
+
+

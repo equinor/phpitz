@@ -74,6 +74,8 @@
 
          Eq_Therm(EqN)=Eq_Therm_Func(Eq_Type(EqN,Range),Eq_T_Par(EqN,1:8,Range),T)        ! Therm eq const as f(T)
 
+       !  Eq_Therm(Eqn_KH_NH3)=Eq_Therm(Eqn_KH_NH3)*1.d4
+
 
          dV=0.d0 ; dK=0.d0
 
@@ -109,6 +111,8 @@
 
       EndDo
 
+
+     ! Write(*,'(A,F12.4,6E15.5)')'EQ:',tc,(Eq_Therm(EqN),EqN=1,6)
 
    End
 
@@ -222,6 +226,9 @@
 
 ! Calculate vapour pressure
    Pvap_H2O=Eq_Therm_Func(1,VapPar(1:8),TK)                                               ! Vapour pressure of water (bar)
+
+  ! Pvap_H2O=Pvap_H2O/10.d0
+
 
 ! Reference fugacity of water vapour at Pvap
    FiRefH2O=FiPar(1) + FiPar(2)*TK + FiPar(3)*TK**2 + FiPar(4)*TK**3 + FiPar(5)*TK**4     ! Reference fucacity
