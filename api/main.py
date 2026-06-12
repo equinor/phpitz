@@ -9,44 +9,51 @@ app = FastAPI()
 
 
 RUNFOLDER = os.getenv("RUN_FOLDER", ".")
-TEMPLATE = """
- {pressure}           {temperature} 
-CO2
- {co2}        0 
-H2O
- {h2o}             0 
-N2
- {n2}            0 
-O2
- {o2}             0 
-H2S
- {h2s}            0 
-NO
- {no}             0 
-NO2
- {no2}             0 
-SO2
- {so2}             0 
-H2SO4
- {h2so4}             0 
-HNO3
- {hno3}             0 
-S8
- {s8}             0 
- 5 
- 1 
- 1 
- 1 
- 1 
- 1 
- 5 
- 1 
- 1 
- 1 
- 1 
- 0 
- 1 
- {pressure}           {temperature} 
+TEMPLATE = """ 5
+ 0
+ 0
+ 1
+ 1
+ 0
+ 1
+ 1
+ 12
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 0
+ 0
+ 0
+ 0
+ 1
+ 0
+ 1
+ {pressure}           {temperature}
+ {co2}
+ {h2o}
+ {n2}
+ {o2}
+ {h2s}
+ {no}
+ {no2}
+ {so2}
+ {h2so4}
+ {hno3}
+ {s8}
+ {nh3}
+ {n2o}
+ {n2o4}
+ {nh4hso4}
+ {hcho}
+ {ch3cho}
+ {ch3coch3}
+ {hcooh}
+ {ch3cooh}
 """
 
 
@@ -66,6 +73,15 @@ class Concentrations(BaseModel):
     hno3: float = Field(default=0)
     s8: float = Field(default=0)
     n2: float = Field(default=0)
+    nh3: float = Field(default=0)
+    n2o: float = Field(default=0)
+    n2o4: float = Field(default=0)
+    nh4hso4: float = Field(default=0)
+    hcho: float = Field(default=0)
+    ch3cho: float = Field(default=0)
+    ch3coch3: float = Field(default=0)
+    hcooh: float = Field(default=0)
+    ch3cooh: float = Field(default=0)
 
 
 class SimulationRequest(BaseModel):
