@@ -65,7 +65,6 @@ class Concentrations(BaseModel):
     h2so4: float = Field(default=0)
     hno3: float = Field(default=0)
     s8: float = Field(default=0)
-    hno2: float = Field(default=0)
     n2: float = Field(default=0)
 
 
