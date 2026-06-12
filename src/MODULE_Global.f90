@@ -6,13 +6,12 @@
 !************************************************************
 
 
-   MODULE GlobVar                                     ! Global variables used MANY places
-      SAVE
-      Double Precision Ptot,Temp                      ! Ptot is pressure in bara and Temp is temperature in Kelvin.
-      Double Precision, Parameter :: R=8.314473d0       ! Gas constant for thermodynamic calculations. Units = [J/K mole]
-!      Double Precision, Parameter :: R=8.3147295d0       ! Gas constant for thermodynamic calculations. Units = [J/K mole]
+   MODULE GlobVar                                  ! Global variables used MANY places
+      Use dpDef
 
-
+      Real(dp) :: Ptot,Temp                        ! Ptot is pressure in bara and Temp is temperature in Kelvin.
+      Real(dp), Parameter :: R     =8.314473_dp    ! Gas constant for thermodynamic calculations. Units = [J/K mole]
+      Real(dp), parameter :: Rgas = 8.314473_dp
       Integer CalcN                                ! Calculation number
 
    End MODULE GlobVar
@@ -21,13 +20,16 @@
 
 
    MODULE Par
-      SAVE
+
       ! ManualUpdate check that these components are updated
 
-      Integer, Parameter :: NoAq=8          ! Number of species in aqueous model
-      Integer, Parameter :: NoDefHC=11      ! Number of defined hydrocarbons
-      Integer, Parameter :: NoHC=11         ! Total number of hydrocarbon components
-                                             ! NB! both NoDefHC and NoHC are used - both should be defined.
+      Integer, Parameter :: NoAq=13          ! Number of species in aqueous model
+      Integer, Parameter :: NoComp=20        ! Number of defined components in CO2 - gas components and possible solids
+      Integer, Parameter :: NoHC=20          ! Gas components - included in EOS
+      Integer, Parameter :: Nsolid=1         ! Number of solids
+      Integer, Parameter :: NInputComp=20    ! Number of input components
+
+      Integer NGasComp, NSolComp
 
   !    Integer, Parameter :: MaxNsalt=22      ! Number of salts included in model
   !    Integer, Parameter :: MaxLev=2         ! Number of levels in calculation 1=Before precipiation, 2=Equilibrium
@@ -40,8 +42,15 @@
 
 
 
+
+   MODULE ResHandling
+      Integer :: UserChoices(0:10)
+
+   End MODULE ResHandling
+
+
    MODULE Path
-      SAVE
+
       Character Paths(4)*500
 
       Character FileName*500
@@ -63,7 +72,6 @@
 
 
    MODULE Files
-      SAVE
 
       Logical ReadFromFile   ! Determines if all the data should be read from file or set directly
 
@@ -84,14 +92,13 @@
       !Character, Parameter :: BinParFile*10          = 'Binpar.dat'
       !Character, Parameter :: FlashRes*12            = 'FlashRes.dat'
       Character, Parameter :: GasSetupFile*14         = 'GasSpecies.dat'
-      Character, Parameter :: GasThermoFile*13        ='GasThermo.dat'
-      Character, Parameter :: GasRxFile*9             ='GasRx.dat'
+      Character, Parameter :: CompThermoFile*14       ='CompThermo.dat'
+      Character, Parameter :: ReactionsFile*13        ='Reactions.dat'
 
    End MODULE Files
 
 
    MODULE ErrMSGS
-      SAVE
       Integer Info
       Integer ErrNo
       Character ErrMSG*500

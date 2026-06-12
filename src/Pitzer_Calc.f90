@@ -126,7 +126,6 @@
       If (OnlyDebye)  F=fy
 
 
-
      ! Write(*,'(A,5F15.8)')'F',fy,mmB,mmPhic,mmPhia,F
       End
 
@@ -161,6 +160,10 @@
          Do a=1,AnX(0)
             Indxa=AnX(a)
             SumBZC=SumBZC + Aqm(Indxa)*(2.d0*BMX(IndxM,Indxa,0) + Z*CMX(IndxM,Indxa))
+
+            !If (IndxM.EQ.2) Then
+            !   Write(*,'(I3,4ES15.5)')Indxa,Aqm(Indxa), 2.d0*BMX(IndxM,Indxa,0) ,  Z*CMX(IndxM,Indxa), SumBZC
+            !EndIf
          EndDo
 
 
@@ -206,10 +209,14 @@
          EndDo
          SumLL=SumLL*6.d0
 
+         If (IndxM.EQ.2) Then
+           ! Write(*,'(I3,7ES12.4)')IndxM,  AqCharge(IndxM)**2*F , SumBZC , SumPhi , SumPsi , AqCharge(IndxM)*SumCca , SumL , SumLL
 
-!         Write(*,'(I3,6E12.4)')IndxM,  AqCharge(IndxM)**2*F , SumBZC , SumPhi , SumPsi , AqCharge(IndxM)*SumCca , SumL
+           ! Write(*,*) exp(SumBZC)
 
-         Aqg(IndxM)=AqCharge(IndxM)**2*F + SumBZC + SumPhi + SumPsi + AqCharge(IndxM)*SumCca + SumL+SumLL
+         EndIf
+
+         Aqg(IndxM)=AqCharge(IndxM)**2*F + SumBZC + SumPhi + SumPsi + AqCharge(IndxM)*SumCca + SumL + SumLL
 
          If (OnlyDebye) Aqg(IndxM)=AqCharge(IndxM)**2*F
 
@@ -252,9 +259,16 @@
          Do c=1,CatM(0)
             Indxc=CatM(c)
             SumBZC=SumBZC +       Aqm(Indxc)*(2.d0*BMX(Indxc,IndxX,0) + Z*CMX(Indxc,IndxX))
+
+          If (IndxX.EQ.6 .AND. Aqm(Indxc).GT.0.d0) Then
+
+         !   Write(*,'(A,4F15.5)')'AA',Aqm(Indxc), BMX(Indxc,IndxX,0), SumBzC
+         EndIf
+
          EndDo
 
-         SumPhi=0.d0
+
+         SumPhi=0.d0 ; SumPsi=0.d0
          Do a=1,AnX(0)
             Indxa=AnX(a)
 
@@ -263,9 +277,13 @@
                Do c=1,CatM(0)
                   Indxc=CatM(c)
                   SumPsi=SumPsi + Aqm(Indxc)*Psi(Indxc,IndxX,Indxa)
+
                EndDo
+
                SumPhi=SumPhi + Aqm(Indxa)*(2.d0*Phi(IndxX,Indxa,0) + SumPsi)
             EndIf
+
+
          EndDo
 
 
@@ -307,10 +325,17 @@
 
          If (OnlyDebye) Aqg(IndxX)=AqCharge(IndxX)**2*F
 
+
+
          Aqg(IndxX)=dexp(Aqg(IndxX))
 
-!         write(*,'(I3,4F15.5)')IndxX,AqCharge(IndxX)**2*F , SumBZC , SumPhi , AqCharge(IndxX)*SumCca
+         If (IndxX.EQ.6) Then
 
+       !  Aqg(iAq_SO4)=0.2d0
+
+         !   write(*,'(I3,5E17.7)')IndxX,AqCharge(IndxX)**2*F , SumBZC , SumPhi , -AqCharge(IndxX)*SumCca ,Aqg(IndxX)
+         !   Read(*,*)
+         EndIf
       EndDo
    End
 

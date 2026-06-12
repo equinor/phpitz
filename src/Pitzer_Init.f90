@@ -37,10 +37,7 @@
       AnX=0
       NeuN=0
 
-
       Do i=1,NoAq
-
-
          if (AqInPitz(i).EQ.1) Then
             If (AqCharge(i).GT.0) Then
                CatM(0)=CatM(0)+1
@@ -85,15 +82,16 @@
       T=Temp
       P=Ptot
 
-
       Do M=1,CatM(0) ! Calculate Beta0, Beta1, Beta2 and C
          Do X=1,AnX(0)
             Indx1=CatM(M)
             Indx2=AnX(X)
+
             Beta0(Indx1,Indx2)=PitzTfunc(BetaCC(0,Indx1,Indx2,1:Npar),BetaCCEq(0,Indx1,Indx2))
             Beta1(Indx1,Indx2)=PitzTfunc(BetaCC(1,Indx1,Indx2,1:Npar),BetaCCEq(1,Indx1,Indx2))
             Beta2(Indx1,Indx2)=PitzTfunc(BetaCC(2,Indx1,Indx2,1:Npar),BetaCCEq(2,Indx1,Indx2))
             Cphi (Indx1,Indx2)=PitzTfunc(CphiCC(  Indx1,Indx2,1:Npar),CphiCCEq( Indx1,Indx2))
+
          EndDo
       EndDo
 
@@ -239,7 +237,7 @@
       Use Eq
       Implicit None
 
-      Double Precision, Parameter :: Pi=3.141592654
+      Double Precision, Parameter :: Pi=3.141592654d0
       Double Precision, Parameter :: NAv=6.02214179d23
       Double Precision, Parameter :: el=1.602176487d-19
       Double Precision, Parameter :: eps0=8.854187817d-12
@@ -257,10 +255,11 @@
 
       Av=2.d0*Aphi*R*10.d0*Temp*(3.d0*dlnDdP - dehowdP )*1.013
 
-   End
+
+      End
 
 
-      Double Precision Function PitzTfunc(Par,EqN)
+      Double Precision Function PitzTfunc(ParArray,EqN)
 !****************************************************************************
 !  SUBROUTINE  :  PitzTfunc
 !  DESCRIPTION :  Temperature function for Pitzer parameters
@@ -273,7 +272,7 @@
       Use Pitzer
       Implicit None
 ! Call variables
-      Double Precision Par(Npar)
+      Double Precision ParArray(Npar)
       Integer EqN
 
 ! Local variables
@@ -282,43 +281,43 @@
       Tref = 25.d0 + 273.15D0
 
       If (EqN.EQ.1) Then      ! Standard T-function
-         PitzTfunc = Par(1)                           &
-                   + Par(2)*(Temp - Tref)					&
-                   + Par(3)*(Temp**2 - Tref**2)			&
-                   + Par(4)*(1.d0/Temp - 1.d0/Tref)         &
-                   + Par(5)*dlog(Temp/Tref)           &
-                   + Par(6)*(1.d0/Temp**2 - 1.d0/Tref**2)
+         PitzTfunc = ParArray(1)                           &
+                   + ParArray(2)*(Temp - Tref)					&
+                   + ParArray(3)*(Temp**2 - Tref**2)			&
+                   + ParArray(4)*(1.d0/Temp - 1.d0/Tref)         &
+                   + ParArray(5)*dlog(Temp/Tref)           &
+                   + ParArray(6)*(1.d0/Temp**2 - 1.d0/Tref**2)
 
       ElseIf (EqN.EQ.2) Then  ! Møller 1988 T-function
-         PitzTfunc = Par(1)                           &
-                   + Par(2)*Temp                      &
-                   + Par(3)/Temp                      &
-                   + Par(4)*dlog(Temp)                &
-                   + Par(5)/(Temp-263.d0)             &
-                   + Par(6)*Temp**2                   &
-                   + Par(7)/(680.d0-Temp)             &
-                   + Par(8)/(Temp-227.d0)
+         PitzTfunc = ParArray(1)                           &
+                   + ParArray(2)*Temp                      &
+                   + ParArray(3)/Temp                      &
+                   + ParArray(4)*dlog(Temp)                &
+                   + ParArray(5)/(Temp-263.d0)             &
+                   + ParArray(6)*Temp**2                   &
+                   + ParArray(7)/(680.d0-Temp)             &
+                   + ParArray(8)/(Temp-227.d0)
       ElseIf (EqN.EQ.3) Then  ! Haarberg T-function
-         PitzTfunc = Par(1)                           &
-                  + Par(2)*(Temp-Tref)                &
-                  + 0.5d0*Par(3)*(Temp-Tref)**2
+         PitzTfunc = ParArray(1)                           &
+                  + ParArray(2)*(Temp-Tref)                &
+                  + 0.5d0*ParArray(3)*(Temp-Tref)**2
 
       ElseIf (EqN.EQ.4) Then  ! Christov
-         PitzTfunc = Par(1)                           &
-                   + Par(2)*Temp                      &
-                   + Par(3)*Temp**2                   &
-                   + Par(4)*Temp**3                   &
-                   + Par(5)/Temp                      &
-                   + Par(6)*dlog(Temp)                &
-                   + Par(7)/(Temp-263.d0)             &
-                   + Par(8)/(680.d0-Temp)
+         PitzTfunc = ParArray(1)                           &
+                   + ParArray(2)*Temp                      &
+                   + ParArray(3)*Temp**2                   &
+                   + ParArray(4)*Temp**3                   &
+                   + ParArray(5)/Temp                      &
+                   + ParArray(6)*dlog(Temp)                &
+                   + ParArray(7)/(Temp-263.d0)             &
+                   + ParArray(8)/(680.d0-Temp)
       ElseIf (EqN.EQ.5) Then   ! Dorn
-         PitzTfunc = Par(1)                           &
-                   + Par(2)*(1.d0/Temp - 1.d0/Tref)   &
-                   + Par(3)*dlog(Temp/Tref)           &
-                   + Par(4)*(Temp-Tref)               &
-                   + Par(5)*(Temp**2 - Tref**2)       &
-                   + Par(6)*Dlog(Temp-225.d0)
+         PitzTfunc = ParArray(1)                           &
+                   + ParArray(2)*(1.d0/Temp - 1.d0/Tref)   &
+                   + ParArray(3)*dlog(Temp/Tref)           &
+                   + ParArray(4)*(Temp-Tref)               &
+                   + ParArray(5)*(Temp**2 - Tref**2)       &
+                   + ParArray(6)*Dlog(Temp-225.d0)
       Else
          PitzTfunc=0.d0
       EndIf

@@ -10,9 +10,9 @@
 !****************************************************************************
 
 
-   SubRoutine PureCompLoad
+   SubRoutine EOSParLoad
 !****************************************************************************
-!  SUBROUTINE  :  PureCompLoad
+!  SUBROUTINE  :  EOSParLoad
 !  DESCRIPTION :  Load pure component paramters for EOS
 !  VARIABLES   :
 !
@@ -45,7 +45,7 @@
          Call FindStart(InFile)
 
          Read(Infile,*)
-         Do i=1,NoDefHC
+         Do i=1,NoHC
             Read(Infile,*) CompName(i),Mw(i),Tc(i),Pc(i),Acent(i),CPen(i)
             CompName(i)=Trim(CompName(i))
          EndDo
