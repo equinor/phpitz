@@ -12,7 +12,7 @@ MODULE Eq
    Integer, Parameter :: MaxSpecInEq=4       ! Maximum species involved in an equilibrium rx
    Integer, Parameter :: NRange=2
    Integer, Parameter :: NGasSol=2           ! Number of gas/HC components that dissolve in water. Used to calculate Henrys constant.
-      
+
 ! Variables
    Integer Eq_Type(NoEq,0:NRange)            ! Which type of temperature equation used, and for NRange ranges
    Integer Eq_TypeRx(NoEq)                   ! What type of reaction this equilibrum constant is used for
@@ -34,8 +34,8 @@ MODULE Eq
    Integer, Parameter :: Eqn_KH_H2SO4=5
    Integer, Parameter :: Eqn_KH_HNO3=6
 
-   
-   
+
+
    !Integer, Parameter :: Eqn_Kw           = 1
    !Integer, Parameter :: Eqn_Ksp_NaCl     = 2
    !Integer, Parameter :: Eqn_KHSO4        = 3
@@ -72,7 +72,7 @@ MODULE Eq
    !Integer, Parameter :: Eqn_Ksp_Na2CO3M  =34
    !Integer, Parameter :: Eqn_Ksp_Na2CO3D  =35
 
-   
+
 ! Parameters - Used in the calculations of the values
    Double Precision Eq_T_Par(NoEq,8,NRange)       ! Parameters fore each T-function, for up to NRange ranges.
    Double Precision Eq_T_Range(NoEq,NRange,2)     ! Temperature range for functions
@@ -81,17 +81,17 @@ MODULE Eq
    Double Precision Eq_IS_Par(NoEq,2)
    Double Precision Eq_dV(NoEq),Eq_dVolm(NoEq)
    Integer          SaltINEq(NoEq)                ! Which saltNo that is in eq. zero if no salt
- 
+
 ! Solvent parameters
    Double Precision  Dens_H2O                ! Density of pure water at P and T
    Double PRecision  Vol_H2O                 ! Molare volume of water at P and T (from Dens_H2O)
    Double PRecision  Pvap_H2O                ! Vapour presssure of pure water at P and T
    Double Precision  Fvap_H2O                ! Fugacity of water to be used in Raoults law
    Double PRecision  dDdP,dlnDdP,dInvDdP,dehowdP     ! Various derivatives of dielectric property of water.
-   
 
-   
-   
+
+
+
 End MODULE Eq
 
 
@@ -112,7 +112,7 @@ End MODULE Eq
 !   Integer AqFeed(NoAq)                   ! Defines if specie is part of feed (given by analysis)
 !   Double Precision AqMw(NoAq)            ! Molecular weight of specie
 !
-!! Numbering of Aq species      
+!! Numbering of Aq species
 !   Integer, Parameter :: iAq_H2O=1
 !   Integer, Parameter :: iAq_H=2
 !   Integer, Parameter :: iAq_OH=3
@@ -143,27 +143,27 @@ End MODULE Eq
 !   Integer, Parameter :: iAq_HS=28
 !   Integer, Parameter :: iAq_CH4=29
 !
-!   
+!
 !
 !! Paremters for volumes
 !   Double Precision Eq_Vol_Par(NoAq,10),Vm(NoAq)
-!   
+!
 !! Variables
 !   Double Precision AqN(NoAq)             ! Total molerate (mole/d) of aqueous species, for those were mass balance is defined
 !   Double Precision Aqm(NoAq)             ! Concentration of aqueous species in molality (mole/kg solvent)
 !   Double Precision AqP(NoAq)             ! Molerate of precipitated species (mole/d)
 !   Double Precision Aqg(NoAq)             ! Activity coefficients in aqueous phase. For water/MEG/EtOH etc it is activity.
 !   Double Precision Solvent               ! Amount of solvent in aqueous phase (kg)
-!      
+!
 !   Double Precision AQN1(NoAq),AqN2(NoAq),AqNi(1:10,NoAq)
-!   
+!
 !   Double Precision Aq_IS,Aq_TDS,Aq_EN,Aq_Dens
-!   
+!
 !   Double Precision AqNT
-!   
+!
 !End MODULE Aqua
-   
-   
+
+
 
 !************************************************************
 !  File Type:     MODULE
@@ -178,7 +178,7 @@ End MODULE Eq
 !   SAVE
 !! Parameters used to define size of variables
 !   Integer, Parameter :: MaxSpecInSalt=5     ! Maximum number of species in a salt
-!   
+!
 !   Integer, Parameter :: Indx_NaCl     = 1
 !   Integer, Parameter :: Indx_CaSO4G   = 2
 !   Integer, Parameter :: Indx_CaSO4H   = 3
@@ -205,33 +205,33 @@ End MODULE Eq
 !
 !! Model parameters from file
 !   Integer           Nsalt                   ! Number of salts in current model, defined by Saltdata.dat
-!   Character         SaltName(MaxNsalt)*10   ! Name of salts   
+!   Character         SaltName(MaxNsalt)*10   ! Name of salts
 !   Integer           Salt_eq(MaxNsalt)       ! Contains the equation no for the salt, used to calculate SR
 !   Double Precision  SaltMw(MaxNsalt)        ! Molecular weight of salts
 !   Double Precision  SaltWat(MaxNsalt)       ! Number of water molecules in salt
 !   Double Precision  SaltVol(MaxNsalt)        ! Partial molare volume of salt
-!   
+!
 !   Integer           SaltAqSpec(MaxNsalt,0:MaxSpecInSalt) ! For each salt, which aqueous species
 !   Double Precision  SaltAqSpecNum(MaxNsalt,MaxSpecInSalt) ! For each salt, the number of each aquesou specie
-!   
+!
 !   Integer           SaltHCSpec(MaxNsalt,0:MaxSpecInSalt) ! For each salt, which aqueous species
 !   Double Precision  SaltHCSpecNum(MaxNsalt,MaxSpecInSalt) ! For each salt, the number of each aquesou specie
-!   
+!
 !   Integer           AqInSalt(NoAq,0:MaxNsalt)
 !   Double Precision  AqInSaltNum(NoAq,MaxNsalt)
-!   
+!
 !   Integer           HCInSalt(NoHC,0:MaxNsalt)
 !   Double Precision  HCInSaltNum(NoHC,MaxNsalt)
-!   
-!   
-!   
+!
+!
+!
 !   Double Precision  SRGoal(MaxNsalt)
-!   
+!
 !! Variables calculated in simulation
 !   Double Precision  SR(MaxNsalt)            ! SR values for the different salts
 !   Integer           PrecSalt(0:MaxNsalt)    ! Which salts are included in precipitation calculation
 !   Double Precision  Prec(MaxNsalt),dPrec(MaxNsalt),MaxPrec(MaxNsalt)
-!   
 !
-!   
+!
+!
 !End MODULE Salt

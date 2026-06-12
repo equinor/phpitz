@@ -12,7 +12,7 @@ MODULE GasRx
    Implicit None
 
    Double PRecision, Parameter :: RxLim=1.d-15
-   
+
    Double Precision CompH(NoDefHC),CompS(NoDefHC)
 
 ! Parameters needed to define reactions
@@ -22,18 +22,18 @@ MODULE GasRx
    Integer RxComp(MaxGasRx, MaxCompInRx)  ! Component number in each reaction
    Integer RxCoef(MaxGasRx, MaxCompInRx)  ! Reaction coefficient
    Integer CompRx(NoDefHC,MaxGasRx)       ! Coefficient in each reaction for each specie
-   
-   
+
+
    Integer N_GasRxm,IncludeRxINP(MaxGasRx)
 
    Double Precision dH(MaxGasRx),dS(MaxGasRx),dG(MaxGasRx),lnk(MaxGasRx)
-   
-   
+
+
    Integer GoVal(MaxGasRx)
    Double Precision dNMax(MaxGasRx,2)
-   
+
    Double Precision Q(MaxGasRx),dQQ(MaxGasRx,MaxGasRx)
 !   Double Precision D(MaxGasRx)
-   
-   
+
+
 End MODULE GasRx

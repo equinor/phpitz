@@ -10,8 +10,8 @@
 !                 E_Theta  - Calculates E_Theta for unsymetrical mixing
 !                 E_ThetaP - Derivative of E_Theta
 !                 J        - Calculates J for unsymetrical mixing
-!                 
-!                 
+!
+!
 !
 !****************************************************************************
 
@@ -24,23 +24,23 @@
 !
 !  CREATED     :  2013.05.11  Baard Kaasa www.scalesim.no
 !  CHANGED     :
-!****************************************************************************  
+!****************************************************************************
       Use Pitzer
       Implicit None
-      
+
 ! Call variables
       Integer M,X,p
-      
+
 ! Functions
       Double Precision g,gp
-      
+
 ! Local variables
       Double Precision x1,x2
-!-----Start-------------------------------------------------------------------  
+!-----Start-------------------------------------------------------------------
 
       x1=PitzAlpha(1,M,X)*sqrIS
       x2=PitzAlpha(2,M,X)*sqrIS
-      
+
       If (p.EQ.0) Then
          BMX=Beta0(M,X) + Beta1(M,X)*g(x1) + Beta2(M,X)*g(x2)
       ElseIf (p.EQ.1) Then
@@ -48,74 +48,74 @@
       ElseIf (p.EQ.2) Then
          BMX=Beta0(M,X) + Beta1(M,X)*dexp(-x1) + Beta2(M,X)*dexp(-x2)
       EndIf
-      
+
    End
 
       Double Precision Function g(x)
 !****************************************************************************
 !  SUBROUTINE  :  g
-!  DESCRIPTION :  Calculates g 
-!  VARIABLES   :  
+!  DESCRIPTION :  Calculates g
+!  VARIABLES   :
 !
 !  CREATED     :  2013.05.011  Baard Kaasa www.scalesim.no
 !  CHANGED     :
-!****************************************************************************  
-      Double Precision x      
+!****************************************************************************
+      Double Precision x
 !-----Start-------------------------------------------------------------------
       If (x.EQ.0.d0) Then
          g=0.d0
       Else
          g=2.d0*(1.d0 - (1.d0 + x)*dexp(-x))/x**2
       EndIf
-      
+
       End
-   
+
       Double Precision Function gP(x)
 !****************************************************************************
 !  SUBROUTINE  :  gP
 !  DESCRIPTION :  Calculates derivative if g
-!  VARIABLES   :  
+!  VARIABLES   :
 !
 !  CREATED     :  2013.05.011  Baard Kaasa www.scalesim.no
 !  CHANGED     :
-!****************************************************************************  
-      Double Precision x   
-!-----Start-------------------------------------------------------------------  
+!****************************************************************************
+      Double Precision x
+!-----Start-------------------------------------------------------------------
       If (x.EQ.0.d0) Then
          gP=0.d0
       Else
          gP=-2.d0*(1.d0 - (1.d0 + x + 0.5d0*x**2)*dexp(-x))/x**2
       EndIf
    End
- 
-   
+
+
       Double Precision Function CMX(M,X)
 !****************************************************************************
 !  SUBROUTINE  :  CMX
-!  DESCRIPTION :  Calculates CMX 
+!  DESCRIPTION :  Calculates CMX
 !  VARIABLES   :  M and X are cation and anion indexes in MultiScale ref
 !
 !  CREATED     :  2013.05.12  Baard Kaasa www.scalesim.no
 !  CHANGED     :
-!****************************************************************************  
+!****************************************************************************
       Use Pitzer
       Use Aqua
       Implicit None
-      
+
 ! Call variables
       Integer M,X
 ! Local variables
       Double Precision ChargeProd
-!-----Start-------------------------------------------------------------------     
-      
+!-----Start-------------------------------------------------------------------
+
       ChargeProd=dble(AqCharge(M)*AqCharge(X))
       ChargeProd=dabs(ChargeProd)
-      
+
       CMX=Cphi(M,X) / (  2.d0*dsqrt( ChargeProd ) )
-      
+
    End
-   
-   
+
+
       Recursive Double Precision Function Phi(i,j,p)
 !****************************************************************************
 !  SUBROUTINE  :  Phi
@@ -125,21 +125,21 @@
 !
 !  CREATED     :  2013.05.11  Baard Kaasa www.scalesim.no
 !  CHANGED     :
-!****************************************************************************  
+!****************************************************************************
       Use Pitzer
       Implicit None
-      
+
 ! Call variables
       Integer i,j,p
-      
+
 ! Functions
       Double Precision E_Theta,E_ThetaP
-      
+
 ! Local variables
       Double Precision alpha1,alpha2,x1,x2
       Integer zi,zj
-!-----Start-------------------------------------------------------------------  
-      
+!-----Start-------------------------------------------------------------------
+
       zi=AqCharge(i)
       zj=AqCharge(j)
 
@@ -150,9 +150,9 @@
       ElseIf (p.EQ.2) Then
          Phi=Theta(i,j) + E_Theta(zi,zj) + IS*E_ThetaP(zi,zj)
      EndIf
-      
-   End 
-   
+
+   End
+
       Double Precision Function E_Theta(zi,zj)
 !****************************************************************************
 !  SUBROUTINE  :  Etheta
@@ -161,31 +161,31 @@
 !
 !  CREATED     :  2013.05.011  Baard Kaasa www.scalesim.no
 !  CHANGED     :
-!****************************************************************************  
+!****************************************************************************
       Use Pitzer
       Implicit None
 
 ! Function
       Double Precision J
-      
+
 ! Call variables
       Integer zi,zj
-      
+
 ! Local variables
       Double Precision help,Xij,Xii,Xjj
-!-----Start-------------------------------------------------------------------  
+!-----Start-------------------------------------------------------------------
 
       If (zi.NE.zj) Then
          help=6.d0*Aphi*sqrIS
          Xij=zi*zj*help
          Xii=zi*zi*help
          Xjj=zj*zj*help
-         
+
          E_Theta=zi*zj/(4.d0*IS)*(J(Xij,0) - 0.5d0*J(Xii,0) - 0.5d0*J(Xjj,0))
       Else
          E_theta=0.d0
       EndIf
-      
+
    End
 
       Double Precision Function E_ThetaP(zi,zj)
@@ -196,37 +196,37 @@
 !
 !  CREATED     :  2013.05.011  Baard Kaasa www.scalesim.no
 !  CHANGED     :
-!****************************************************************************  
+!****************************************************************************
       Use Pitzer
       Implicit None
 
 ! Function
       Double Precision J,E_Theta
-      
+
 ! Call variables
       Integer zi,zj
-      
+
 ! Local variables
       Double Precision help,Xij,Xii,Xjj,Pij,Pii,Pjj
-!-----Start-------------------------------------------------------------------  
+!-----Start-------------------------------------------------------------------
 
       If (zi.NE.zj) Then
          help=6.d0*Aphi*sqrIS
          Xij=zi*zj*help
          Xii=zi*zi*help
          Xjj=zj*zj*help
-         
+
          Pij=Xij*J(Xij,1)
          Pii=Xii*J(Xii,1)
          Pjj=Xjj*J(Xjj,1)
-         
+
          E_ThetaP= -E_Theta(zi,zj)/IS + zi*zj/(8.d0*IS**2)*(Pij - 0.5d0*Pii - 0.5d0*Pjj)
       Else
          E_thetaP=0.d0
       EndIf
-      
-   End   
-   
+
+   End
+
       Double Precision Function J(x,p)
 !****************************************************************************
 !  SUBROUTINE  :  J
@@ -236,9 +236,9 @@
 !
 !  CREATED     :  2013.05.09  Baard Kaasa www.scalesim.no
 !  CHANGED     :
-!****************************************************************************  
+!****************************************************************************
       Implicit None
-      
+
 ! Call variables
       Double Precision x
       Integer p
@@ -247,7 +247,7 @@
       Double Precision c(4),T,N,dT,dN
       Data c/4.581d0, -0.7237d0, -0.012d0, 0.528d0 /
 
-!-----Start-------------------------------------------------------------------  
+!-----Start-------------------------------------------------------------------
 
 ! J is calculated from empirical function given by Pitzer, J. Solution Chem, 4, 249, (1975)
 
@@ -258,21 +258,20 @@
          J= T/N
       ElseIf (p.EQ.1) Then
          dT = 1
-         
+
          dN = c(2)*x**(c(2)-1.d0)*dexp(c(3)*x**c(4))
          dN = dN + x**c(2)*dexp(c(3)*x**c(4))*(c(3)*c(4)*x**(c(4) - 1.d0))
          dN = dN*c(1)
-   
+
          J = (dT*N - T*dN) / (N**2)
       EndIf
-      
+
    End
 
 
-   
-   
-   
 
-   
 
-  
+
+
+
+
