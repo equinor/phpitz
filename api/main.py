@@ -90,10 +90,71 @@ class SimulationRequest(BaseModel):
     concentrations: Concentrations
 
 
+def parse_float(value: str) -> float:
+    try:
+        return float(value)
+    except ValueError:
+        if "-" in value[1:] and "e" not in value.lower():
+            idx = value.index("-", 1)
+            return float(value[:idx] + "e" + value[idx:])
+        raise
+
+
+def parse_output(text: str) -> dict:
+    result = {"raw": text, "phase_reactions": {}, "aqueous_phase": None}
+
+    lines = text.split("\n")
+    i = 0
+    while i < len(lines):
+        line = lines[i].strip()
+
+        if "CO2 PHASE REACTIONS" in line:
+            i += 1
+            while i < len(lines) and "---" not in lines[i]:
+                i += 1
+            i += 1
+            while i < len(lines) and "===" not in lines[i]:
+                parts = lines[i].split()
+                if len(parts) >= 4:
+                    result["phase_reactions"][parts[0]] = {
+                        "feed_mol": parse_float(parts[1]),
+                        "equil_mol": parse_float(parts[2]),
+                        "equil_ppm": parse_float(parts[3]),
+                    }
+                i += 1
+
+        elif "AQUEOUS PHASE RESULTS" in line or "ACID PHASE RESULTS" in line:
+            result["aqueous_phase"] = {}
+            i += 1
+            while i < len(lines):
+                line = lines[i].strip()
+                if "Water pH" in line:
+                    result["aqueous_phase"]["ph"] = parse_float(line.split(":")[1].strip())
+                elif "Water phase" in line:
+                    result["aqueous_phase"]["water_mass_kg"] = parse_float(line.split(":")[1].replace("kg", "").strip())
+                elif "Water activity" in line:
+                    result["aqueous_phase"]["water_activity"] = parse_float(line.split(":")[1].strip())
+                elif "H2SO4 in water" in line:
+                    result["aqueous_phase"]["h2so4_wt_pct"] = parse_float(line.split(":")[1].replace("wt%", "").strip())
+                elif "HNO3  in water" in line:
+                    result["aqueous_phase"]["hno3_wt_pct"] = parse_float(line.split(":")[1].replace("wt%", "").strip())
+                elif "NH3   in water" in line:
+                    result["aqueous_phase"]["nh3_wt_pct"] = parse_float(line.split(":")[1].replace("wt%", "").strip())
+                elif "CO2   in water" in line:
+                    result["aqueous_phase"]["co2_wt_pct"] = parse_float(line.split(":")[1].replace("wt%", "").strip())
+                elif "---" in line and result["aqueous_phase"]:
+                    break
+                i += 1
+
+        i += 1
+
+    return result
+
+
 @app.post("/api/run")
 async def calculate(simulationRequest: SimulationRequest):
-    result = simulationRequest.model_dump()
-    concentrations = result["concentrations"]
+    data = simulationRequest.model_dump()
+    concentrations = data["concentrations"]
     concentrations["co2"] = 1000000 - sum(concentrations.values())
 
     with chdir(RUNFOLDER):
@@ -101,12 +162,11 @@ async def calculate(simulationRequest: SimulationRequest):
             fh.write(
                 TEMPLATE.format(
                     **concentrations,
-                    pressure=result["pressure"],
-                    temperature=result["temperature"],
+                    pressure=data["pressure"],
+                    temperature=data["temperature"],
                 )
             )
 
-        result = subprocess.run("CO2Transport", text=True, stdout=subprocess.PIPE)
+        proc = subprocess.run("CO2Transport", text=True, stdout=subprocess.PIPE)
 
-    result = result.stdout.strip()
-    return result
+    return parse_output(proc.stdout)
