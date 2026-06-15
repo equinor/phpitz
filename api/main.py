@@ -31,7 +31,7 @@ TEMPLATE = """ 5
  0
  0
  1
- 0
+ 1
  1
  {pressure}           {temperature}
  {co2}
