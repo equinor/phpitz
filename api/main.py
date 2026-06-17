@@ -12,8 +12,8 @@ RUNFOLDER = os.getenv("RUN_FOLDER", ".")
 TEMPLATE = """ 5
  0
  0
- 1
- 1
+ {reactive}
+ {solubility}
  0
  1
  1
@@ -88,6 +88,8 @@ class SimulationRequest(BaseModel):
     temperature: int
     pressure: int
     concentrations: Concentrations
+    reactive: bool = Field(default=True)
+    solubility: bool = Field(default=True)
 
 
 def parse_float(value: str) -> float:
@@ -164,6 +166,8 @@ async def calculate(simulationRequest: SimulationRequest):
                     **concentrations,
                     pressure=data["pressure"],
                     temperature=data["temperature"],
+                    reactive=int(data["reactive"]),
+                    solubility=int(data["solubility"]),
                 )
             )
 
