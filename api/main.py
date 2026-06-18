@@ -103,14 +103,41 @@ def parse_float(value: str) -> float:
 
 
 def parse_output(text: str) -> dict:
-    result = {"raw": text, "phase_reactions": {}, "aqueous_phase": None}
+    result = {"raw": text, "phase_reactions": {}, "aqueous_phase": None, "solubility": None}
 
     lines = text.split("\n")
     i = 0
     while i < len(lines):
         line = lines[i].strip()
 
-        if "CO2 PHASE REACTIONS" in line:
+        if "MOLE RATES AFTER" in line:
+            result["solubility"] = {}
+            dash_count = 0
+            i += 1
+            while i < len(lines) and dash_count < 2:
+                if "---" in lines[i]:
+                    dash_count += 1
+                i += 1
+            while i < len(lines) and "---" not in lines[i]:
+                parts = lines[i].split()
+                if len(parts) >= 4:
+                    name = parts[0]
+                    total_mol = parse_float(parts[1])
+                    gas_mol = parse_float(parts[2])
+                    water_mol = parse_float(parts[3])
+                    pct_in_aqueous = parse_float(parts[4]) if len(parts) >= 5 else 0.0
+                    result["solubility"][name] = {
+                        "total_mol": total_mol,
+                        "gas_mol": gas_mol,
+                        "water_mol": water_mol,
+                        "pct_in_aqueous": pct_in_aqueous,
+                    }
+                i += 1
+
+        elif "No aquous phase present" in line:
+            result["solubility"] = {}
+
+        elif "CO2 PHASE REACTIONS" in line:
             i += 1
             while i < len(lines) and "---" not in lines[i]:
                 i += 1
