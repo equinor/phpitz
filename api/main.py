@@ -103,7 +103,12 @@ def parse_float(value: str) -> float:
 
 
 def parse_output(text: str) -> dict:
-    result = {"raw": text, "phase_reactions": {}, "aqueous_phase": None, "solubility": None}
+    result = {
+        "raw": text,
+        "phase_reactions": {},
+        "aqueous_phase": None,
+        "solubility": None,
+    }
 
     lines = text.split("\n")
     i = 0
@@ -158,19 +163,33 @@ def parse_output(text: str) -> dict:
             while i < len(lines):
                 line = lines[i].strip()
                 if "Water pH" in line:
-                    result["aqueous_phase"]["ph"] = parse_float(line.split(":")[1].strip())
+                    result["aqueous_phase"]["ph"] = parse_float(
+                        line.split(":")[1].strip()
+                    )
                 elif "Water phase" in line:
-                    result["aqueous_phase"]["water_mass_kg"] = parse_float(line.split(":")[1].replace("kg", "").strip())
+                    result["aqueous_phase"]["water_mass_kg"] = parse_float(
+                        line.split(":")[1].replace("kg", "").strip()
+                    )
                 elif "Water activity" in line:
-                    result["aqueous_phase"]["water_activity"] = parse_float(line.split(":")[1].strip())
+                    result["aqueous_phase"]["water_activity"] = parse_float(
+                        line.split(":")[1].strip()
+                    )
                 elif "H2SO4 in water" in line:
-                    result["aqueous_phase"]["h2so4_wt_pct"] = parse_float(line.split(":")[1].replace("wt%", "").strip())
+                    result["aqueous_phase"]["h2so4_wt_pct"] = parse_float(
+                        line.split(":")[1].replace("wt%", "").strip()
+                    )
                 elif "HNO3  in water" in line:
-                    result["aqueous_phase"]["hno3_wt_pct"] = parse_float(line.split(":")[1].replace("wt%", "").strip())
+                    result["aqueous_phase"]["hno3_wt_pct"] = parse_float(
+                        line.split(":")[1].replace("wt%", "").strip()
+                    )
                 elif "NH3   in water" in line:
-                    result["aqueous_phase"]["nh3_wt_pct"] = parse_float(line.split(":")[1].replace("wt%", "").strip())
+                    result["aqueous_phase"]["nh3_wt_pct"] = parse_float(
+                        line.split(":")[1].replace("wt%", "").strip()
+                    )
                 elif "CO2   in water" in line:
-                    result["aqueous_phase"]["co2_wt_pct"] = parse_float(line.split(":")[1].replace("wt%", "").strip())
+                    result["aqueous_phase"]["co2_wt_pct"] = parse_float(
+                        line.split(":")[1].replace("wt%", "").strip()
+                    )
                 elif "---" in line and result["aqueous_phase"]:
                     break
                 i += 1
