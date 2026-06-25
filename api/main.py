@@ -85,8 +85,8 @@ class Concentrations(BaseModel):
 
 
 class SimulationRequest(BaseModel):
-    temperature: int
-    pressure: int
+    temperature: float
+    pressure: float
     concentrations: Concentrations
     reactive: bool = Field(default=True)
     solubility: bool = Field(default=True)
