@@ -125,12 +125,16 @@
 
    n=Sum(Ni) ; RT=Reos*Temp
 
+
+
    If (.True.) Then
       Call SolveQubic(Ni,X,J)
    Else
       Call VolSolve(Ni,Phase,ZF)
       Return
    EndIf
+
+
 
    If (J.EQ.1) Then  ! Only one solution
       ZF=X(1)
@@ -146,6 +150,8 @@
       EndIf
 
    Else              ! Two solutions
+
+
       If (Phase.EQ.1) Then ! Want the liquid root
          ZF=x(1)
       ElseIf (Phase.EQ.2) Then ! Want the gas root
@@ -154,6 +160,9 @@
          Lev=2   ! Calculation of fugacity, but not derivatives
          Call CalcFug(Lev,Ni,X(1),Fug_liq)
          Call CalcFug(Lev,Ni,X(3),Fug_gas)
+
+         Write(*,*)Fug_Liq,Fug_gas
+
 
          If (GibbsE(Ni,Fug_liq).LE.GibbsE(Ni,Fug_gas)) Then
             ZF=X(1)

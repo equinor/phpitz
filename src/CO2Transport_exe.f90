@@ -34,6 +34,10 @@
    Integer :: ModelOptions(0:10)
    Common /CModelOptions / ModelOptions
 
+   Real(dp) :: TestH(500), EstimH
+   Common /CTestH / TestH
+   Common /CEstimH/ EstimH
+
 
    Double Precision pH, Gref(NoComp)
 ! Local variables
@@ -47,6 +51,7 @@
    Double Precision :: Results(50,500),PT(2,500), Inb(10), Aqmass , GasMass, mH2SO4, mHNO3, mNH3, mCO2
 !-Start----------------------------------------------------------------------
    AllComp=0.d0 ; MultiCaseRes=0.d0 ; MultiCaseWat=0.d0
+
 
    ! Some general model setup
    Call InitVar
@@ -104,6 +109,7 @@
 ! You can store various results in variable Results(N,k) where N is type of result and k is case number.
    Results=0.d0
 
+
    Do k=1,NCases
 
       If (NCases.GT.1) Write(*,*)'Case: ',k
@@ -156,7 +162,7 @@
 
       If (CalcOptions(2).EQ.1) Then
 
-         If (CalcOptions(1).EQ.0) Call SinglePhase(NGas,1)
+         If (CalcOptions(1).EQ.0) Call SinglePhase(NGas,0)
 
 
          If (ModelOptions(1).EQ.1) Then
@@ -229,7 +235,8 @@
 
          HCN=0.d0
          Do i=1,NoHC
-            HCN(0,i)=NGas(i) + InpLiqN(i)
+            HCN(0,i)=NGas(i) !+ InpLiqN(i)
+
          EndDo
          HCN(0,0)=sum(HCN(0,1:NoHC))
 
@@ -274,7 +281,10 @@
 
 
                NGas(1:NoHC)=HCN(PhGas,1:NoHC)
-               Phase=1
+
+
+
+               Phase=0
                Call SinglePhase(NGas,Phase)
 
 
@@ -284,6 +294,7 @@
                N_Aq(iAq_HNO3)=HCN(PhAq,iHC_HNO3)
                N_Aq(iAq_NH3)=HCN(PhAq,iHC_NH3)
 
+               EstimH=TestH(k)
 
                Call PTcalc(pH)
 
@@ -298,7 +309,8 @@
             Write(*,*)'Component     Gas before(ppm)     Gas after (ppm)      FugCoef'
             Write(*,*)'------------------------------------------------------------------------'
             Do i=1, NoHC
-               Write(*,'(2A,3F17.4)')' ',comp_name(i),GasbeforepH(i)/sum(GasbeforepH)*1.d6, HCN(PhGas,i)/HCN(PhGas,0)*1.d6,FugY(i)
+          !     Write(*,'(2A,3F17.4)')' ',comp_name(i),GasbeforepH(i)/sum(GasbeforepH)*1.d6, HCN(PhGas,i)/HCN(PhGas,0)*1.d6,FugY(i)
+               Write(*,'(2A,3F17.4)')' ',comp_name(i),GasbeforepH(i), HCN(PhGas,i),FugY(i)
             EndDO
            Write(*,*)'------------------------------------------------------------------------'
 
@@ -366,20 +378,21 @@
                MultiCaseWat(5,k)=mHNO3
                MultiCaseWat(6,k)=mNH3
                MultiCaseWat(7,k)=mCO2
+               MultiCaseWat(8,k)=GasDens
 
 
               Write(*,*)'------------------------------------------------------------------------'
               Write(*,*)'Ion            Conc(mole/kg)          Gamma'
               Write(*,*)'------------------------------------------------------------------------'
               Do i=2,NoAq
-                  Write(*,'(2A,F17.7,F17.5)')' ',AqName(i),Aqm(i),Aqg(i)
+                  Write(*,'(2A,ES17.7,ES17.5)')' ',AqName(i),Aqm(i),Aqg(i)
               EndDo
               Write(*,*)'------------------------------------------------------------------------'
 
          Else
             Write(*,*)
 
-
+            MultiCaseWat(8,k)=GasDens
 
             Write(*,*)'AQUEOUS PHASE FORMATION'
 
@@ -399,23 +412,23 @@
 
     If (CalcOptions(5)==1) Then
 
-      FileName=trim(MainPath) // "MultiCase.res"
-
+      FileName=trim(MainPath) // "MultiCase.res"   ! MainPath is same as set in the beginning.
+     ! FileName="MultiCase.res"                    ! If result file is saved in same folder as program.
       ResFileNum=62
 
       Open (UNIT=ResFileNum, FILE=FileName)
 
-      Write(ResFileNum,*)NCases
+      Write(ResFileNum,*)NCases                    ! Number of cases
 
       Do k=1,NCases
-         Write(ResFileNum,*)PT(1,k)
-         Write(ResFileNum,*)PT(2,k)
-         Do i=1,NoComp
-            Write(ResFileNum,*)MultiCaseRes(i,k)
+         Write(ResFileNum,*)PT(1,k)             ! Pressure for case
+         Write(ResFileNum,*)PT(2,k)             ! Temperature for case
+         Do i=1,NoComp                             ! NoComp=Gas components in model, currently 20
+            Write(ResFileNum,*)MultiCaseRes(i,k)   ! Mole rates of the 20 components
          EndDO
 
-         Do i=1,7
-            Write(ResFileNum,*) MultiCaseWat(i,k)
+         Do i=1,8
+            Write(ResFileNum,*) MultiCaseWat(i,k)  ! Various water phase properties, see Word document
          EndDo
 
 
@@ -484,8 +497,15 @@
    Integer :: CalcOptions(0:10)
    Common /CCalcOptions/ CalcOptions
 
+
+   Real(dp) :: CalcPar(1:10)
+   Common /CCalcPar/ CalcPar
+
+   Real(dp) :: TestH(500)
+   Common /CTestH /TestH
+
 !Local variables
-   Integer :: i,j, InputFileNum, NCases
+   Integer :: i,j, InputFileNum, NCases, NPar
    Real(dp) :: InpN(NoComp,500), PT(2,500)
 !-Start----------------------------------------------------------------------
 
@@ -530,7 +550,17 @@
          Do i=1, NoComp
             Read(InputFileNum,*)InpN(i,j)
          EndDo
+
+         TestH(j)=InpN(3,j)
+         InpN(3,j)=0.d0
+
       EndDo
+
+      CalcPar=0.d0
+      Read(InputFileNum,*)NPar
+      Do i=1,NPar
+         Read(InputFileNum,*)CalcPar(i)
+      EndDO
 
 
    Close(InputFileNum)

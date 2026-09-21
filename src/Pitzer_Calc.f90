@@ -142,7 +142,7 @@
       Implicit None
 
 ! Functions
-      Double Precision BMX, CMX,Phi,E_ThetaP
+      Double Precision BMX, CMX,Phi,E_ThetaP, g
 
    Logical OnlyDebye
    Common /COnlyDebye / OnlyDebye
@@ -150,6 +150,8 @@
 ! Local variables
       Integer M,IndxM,a,Indxa,c,Indxc,ap,Indxap,n,Indxn
       Double PRecision SumBZC,SumPhi,SumPsi,SumL,SumLL
+
+      Double Precision x1,x2
 !-----Start-------------------------------------------------------------------
 
 
@@ -161,8 +163,19 @@
             Indxa=AnX(a)
             SumBZC=SumBZC + Aqm(Indxa)*(2.d0*BMX(IndxM,Indxa,0) + Z*CMX(IndxM,Indxa))
 
-            !If (IndxM.EQ.2) Then
-            !   Write(*,'(I3,4ES15.5)')Indxa,Aqm(Indxa), 2.d0*BMX(IndxM,Indxa,0) ,  Z*CMX(IndxM,Indxa), SumBZC
+            !If (IndxM.EQ.2 .AND. Indxa.EQ.5) Then
+            !   Write(*,'(I3,4ES15.5)')Indxa,BMX(IndxM,Indxa,0)
+            !
+            !   !If (Indxa.EQ.5) Then
+            !      x1=PitzAlpha(1,IndxM,IndxA)*sqrIS
+            !      x2=PitzAlpha(2,IndxM,Indxa)*sqrIS
+            !   !
+            !      Write(*,*)Beta0(IndxM,IndxA) + Beta1(IndxM,IndxA)*g(x1) + Beta2(IndxM,IndxA)*g(x2)
+            !   !
+            !   !
+            !   !EndIf
+            !
+            !
             !EndIf
          EndDo
 
@@ -209,12 +222,7 @@
          EndDo
          SumLL=SumLL*6.d0
 
-         If (IndxM.EQ.2) Then
-           ! Write(*,'(I3,7ES12.4)')IndxM,  AqCharge(IndxM)**2*F , SumBZC , SumPhi , SumPsi , AqCharge(IndxM)*SumCca , SumL , SumLL
 
-           ! Write(*,*) exp(SumBZC)
-
-         EndIf
 
          Aqg(IndxM)=AqCharge(IndxM)**2*F + SumBZC + SumPhi + SumPsi + AqCharge(IndxM)*SumCca + SumL + SumLL
 
@@ -222,6 +230,16 @@
 
 
          Aqg(IndxM)=dexp(Aqg(IndxM))
+
+
+         If (IndxM.EQ.2) Then
+            !Write(*,'(I3,7ES12.4)')IndxM,  AqCharge(IndxM)**2*F , SumBZC , SumPhi , SumPsi , AqCharge(IndxM)*SumCca , SumL , SumLL
+
+          !  Write(*,*) Aqg(IndxM), exp(SumBZC)
+
+         EndIf
+
+
  !        write(*,*)IndxM,Aqm(IndxM),Aqg(IndxM)
       EndDo
 

@@ -36,6 +36,9 @@
       Double Precision Poynt(NoEq)
       COmmon /CPoynt/Poynt
 
+   Real(dp) :: EstimH
+   Common /CEstimH/ EstimH
+
 ! Local variables
       Integer i,EqN,Range
       Double Precision T,dV,dK,Rcm,RT,Pcorr,Pg,Pgsat,T_Low,T_Hi,tc,j
@@ -75,6 +78,11 @@
          Eq_Therm(EqN)=Eq_Therm_Func(Eq_Type(EqN,Range),Eq_T_Par(EqN,1:8,Range),T)        ! Therm eq const as f(T)
 
        !  Eq_Therm(Eqn_KH_NH3)=Eq_Therm(Eqn_KH_NH3)*1.d4
+
+
+        ! Write(*,*)'HNO3:', Eq_Therm(Eqn_KH_HNO3)
+
+        ! Eq_Therm(Eqn_KH_HNO3)=225e6
 
 
          dV=0.d0 ; dK=0.d0
@@ -209,6 +217,9 @@
 ! Functions
       Double Precision Eq_Therm_Func
 
+      Real(dp) :: CalcPar(1:10)
+   Common /CCalcPar/ CalcPar
+
 ! Local variables
    Double Precision TK,tc,FiRefH2O,PyH2O,Rcm
    Double Precision, Parameter :: MwH2O=18.016d0
@@ -227,7 +238,8 @@
 ! Calculate vapour pressure
    Pvap_H2O=Eq_Therm_Func(1,VapPar(1:8),TK)                                               ! Vapour pressure of water (bar)
 
-  ! Pvap_H2O=Pvap_H2O/10.d0
+
+   Pvap_H2O=Pvap_H2O/CalcPar(1)
 
 
 ! Reference fugacity of water vapour at Pvap

@@ -83,11 +83,12 @@
 
 
    Ni=HCN(PhGas,1:NoHC)
-   Phase=1
+   Phase=0
    Call SinglePhase(Ni,Phase)
 
 
    HCy(1:NoHC)=HCN(PhGas,1:NoHC)/HCN(PhGas,0)
+
 
 
    End
@@ -166,10 +167,11 @@
 
    External pHCalc
 
-   Double Precision, Parameter :: pHacc=1.d-9
+   Double Precision, Parameter :: pHacc=1.d-12
+   Double Precision, Parameter :: pHit =1.0e-4
    Double Precision, Parameter :: pHlow=-4.d0
-   Double Precision, Parameter :: pHHi=15.d0
-   Double Precision, Parameter :: AqAcc=1.d-8
+   Double Precision, Parameter :: pHHi=20.d0
+   Double Precision, Parameter :: AqAcc=1.d-6
 
    Double Precision pH
 
@@ -186,7 +188,7 @@
 
 !-Start----------------------------------------------------------------------
 
-   F2=1.d0
+   F2=0.5d0
    Aqm=0.d0
    f=0.2d0
    pH=2.d0
@@ -235,10 +237,9 @@
 
          Call pHNewton(pHCalc,pHlow,pHHi,pHacc,pH)
 
-       !  Write(*,'(I3,F15.5,3E15.5)')Itno, pH, MaxDiff, dabs(pH-pHold), dabs(Aqg(iAq_H2O)-Aqg_OLD(iAq_H2O))
+         !Write(*,'(I3,F15.5,3E15.5)')Itno, pH, MaxDiff, dabs(pH-pHold), dabs(Aqg(iAq_H2O)-Aqg_OLD(iAq_H2O))
 
-
-         If (dabs(pH-pHold).LT.pHacc .AND. MaxDiff.LT.AqAcc .AND. Itno.GE.50) Goto 150
+         If (dabs(pH-pHold).LT.pHit .AND. MaxDiff.LT.AqAcc .AND. Itno.GE.50) Goto 150
          pHOld=pH
 
       EndDo
@@ -247,7 +248,7 @@
 
 
 150   Continue
-
+      !Read(*,*)
 
       NGasSolub=4
 
@@ -260,8 +261,8 @@
    ! Caculate target mole fraction in gas phase ManualUpdate
       ytar(1)=Aqg(iAq_H2O)*Fvap_H2O/(Fugy(iHC_H2O)*Ptot)
       ytar(2)=Aqm(iAq_H2SO4)/(  Eq_Stoec(Eqn_KH_H2SO4) * Ptot )
-      ytar(3)=Aqm(iAq_HNO3)/(  Eq_Stoec(Eqn_KH_HNO3) * Ptot )
-      ytar(4)=Aqm(iAq_NH3)/(  Eq_Stoec(Eqn_KH_NH3) * Ptot )
+      ytar(3)=Aqm(iAq_HNO3 )/(  Eq_Stoec(Eqn_KH_HNO3 ) * Ptot )
+      ytar(4)=Aqm(iAq_NH3  )/(  Eq_Stoec(Eqn_KH_NH3  ) * Ptot )
 
    ! Calculate target moles in CO2 phase
       Do m=1,NGasSolub
@@ -286,10 +287,11 @@
 
       EndDo
 
-      If (j.GE.100)   F2=0.5d0
+      If (j.GE.50)    F2=0.25d0
       If (j.GE.500)   F2=0.1d0
       If (j.GE.1000)  F2=0.02d0
       If (j.GE.1500)  F2=0.005d0
+
 
       nmov=nmov*F2  ! Adjust to stabilize simulation and avoid oscillation
 
@@ -444,6 +446,7 @@
 
    dF =-dlog(10.D0)*H*dF
 
+  ! Write(*,*)pH,F,dF
 
    End
 
