@@ -41,6 +41,7 @@
    x1=PitzAlpha(1,M,X)*sqrIS
    x2=PitzAlpha(2,M,X)*sqrIS
 
+
    If (p.EQ.0) Then
       BMX=Beta0(M,X) + Beta1(M,X)*g(x1) + Beta2(M,X)*g(x2)
    ElseIf (p.EQ.1) Then
