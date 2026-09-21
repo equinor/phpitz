@@ -54,6 +54,8 @@ TEMPLATE = """ 5
  {ch3coch3}
  {hcooh}
  {ch3cooh}
+ 1
+ {cond_factor}
 """
 
 
@@ -90,6 +92,7 @@ class SimulationRequest(BaseModel):
     concentrations: Concentrations
     reactive: bool = Field(default=True)
     solubility: bool = Field(default=True)
+    cond_factor: float = Field(default=1)
 
 
 def parse_float(value: str) -> float:
@@ -214,6 +217,7 @@ async def calculate(simulationRequest: SimulationRequest):
                     temperature=data["temperature"],
                     reactive=int(data["reactive"]),
                     solubility=int(data["solubility"]),
+                    cond_factor=int(data["cond_factor"]),
                 )
             )
 
