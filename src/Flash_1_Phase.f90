@@ -24,8 +24,8 @@
       Common /CGasDens / GasDens
 
 ! Local variables
-      Integer i,Phase,ResPhase
-      Double Precision SumAq,FugSingle(NoHC),Mwgas
+      Integer Phase
+      Double Precision FugSingle(NoHC),Mwgas
 
 !-----Start--------------------------------------------------
       Lev=2

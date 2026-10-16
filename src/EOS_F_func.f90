@@ -15,33 +15,26 @@
 
 ! Call variables
       Integer Lev
-      Double Precision Ni(NoHC),V,DT,DTT,DiT(NoHC)
+      Double Precision Ni(NoHC),V
 
 ! Function variables
-      Double Precision hfunc1,hVfunc1,hBfunc1,hBVfunc1,hBBfunc1,hVVfunc1
-      Double Precision gfunc1,gVfunc1,gBfunc1,gBVfunc1,gBBfunc1,gVVfunc1
-      Double Precision dBfunc,dDfunc,d2Bfunc,d2Dfunc
+      Double Precision hfunc1,hVfunc1,hBfunc1,hVVfunc1
+      Double Precision gfunc1,gVfunc1,gBfunc1,gVVfunc1
+      Double Precision dBfunc,dDfunc
 
-      Double Precision hfunc2,hVfunc2,hBfunc2,hBVfunc2,hBBfunc2,hVVfunc2
-      Double Precision gfunc2,gVfunc2,gBfunc2,gBVfunc2,gBBfunc2,gVVfunc2
-      Double Precision dCvptfunc,d2Cvptfunc
-      Double Precision hCfunc2
 
 ! Local variables
-      Integer i,j
-      Double Precision n,D,B,Cvpt
+      Integer i
+      Double Precision n,D,B
 
-      Double Precision h,hV,hB,hBV,hBB,hVV
-      Double Precision g,gV,gB,gBV,gBB,gVV
+      Double Precision h,hV,hB,hVV
+      Double Precision g,gV,gB,gVV
 
-      Double Precision Fn,FT,FV,FB,FD
-      Double Precision FnV,FnB,FTT,FBT,FDT,FBV,FBB,FDV,FBD,FTV,FVV
+      Double Precision Fn,FV,FB,FD
+      Double Precision FVV
 
-      Double Precision hC
-      Double Precision FC
 
-      Double Precision dBdi(NoHC),dDdi(NoHC),dBdij(NoHC,NoHC),dDdij(NoHC,NoHC)
-      Double Precision dCvpti(NoHC)
+      Double Precision dBdi(NoHC),dDdi(NoHC)
 !-----Start--------------------------------------------------
       n=sum(Ni)
 

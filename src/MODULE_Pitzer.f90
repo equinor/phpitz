@@ -37,14 +37,14 @@ MODULE Pitzer
       Double Precision Theta(NoAq,NoAq)                                    ! Pair of same sign cc and aa
       Double Precision Psi(NoAq,NoAq,NoAq)                                 ! Tripple interactions cc'a and caa'
       Double Precision Lambda(NoAq,NoAq)                                   ! Neutral-ion pairs nc and na
-      Double Precision Ksi(NoAq,NoAq,NoAq),Tau(NoAq,NoAq,NoAq)             ! Neutral-ion tripplets nca
+      Double Precision Ksi(NoAq,NoAq,NoAq)                                 ! Neutral-ion tripplets nca
       Double Precision PitzAlpha(2,NoAq,NoAq)
 
 ! Pitzer constants
       Double Precision, Parameter :: Debye_b=1.2d0
 
 ! Water properties
-      Double Precision Dielec,rhow,Aphi,By,Av,Ay
+      Double Precision Dielec,rhow,Aphi,By,Av
       Double Precision IS,Z,sqrIS
 
 ! Debue-Hückel, F and SumCca

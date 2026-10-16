@@ -12,7 +12,6 @@
       Real(dp) :: Ptot,Temp                        ! Ptot is pressure in bara and Temp is temperature in Kelvin.
       Real(dp), Parameter :: R     =8.314473_dp    ! Gas constant for thermodynamic calculations. Units = [J/K mole]
       Real(dp), parameter :: Rgas = 8.314473_dp
-      Integer CalcN                                ! Calculation number
 
    End MODULE GlobVar
 
@@ -100,7 +99,6 @@
 
    MODULE ErrMSGS
       Integer Info
-      Integer ErrNo
       Character ErrMSG*500
 
    End MODULE ErrMSGS

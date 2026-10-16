@@ -31,7 +31,6 @@
       Integer Phase
       Double Precision Ni(NoHC),ZF
 
-      Integer i
 !-----Start--------------------------------------------------
 
 !      Call CPA_setup(nz)
@@ -55,6 +54,8 @@
 ! Update log:
 !**********************************************************************
       Use EOS
+      Use GlobVar
+      Use HC
       Implicit None
 
 ! Call variables
@@ -63,18 +64,20 @@
 
 
 ! Common variables
-      Double Precision dBfunc,GE,tel(NoHC),Nev(NoHC)
+      Double Precision GE,tel(NoHC),Nev(NoHC)
       Common /CGE         / GE,tel,Nev
 
 !--Local variables
       Integer i,j
-      Double Precision ledd
 
 !--Start-------------------------------------------------------
       EOS_A=0.d0 ; EOS_B=0.d0 ; EOS_C=0.d0   ; EOS_Cvpt=0.d0
 
       EOS_B=Dot_Product(Ni(1:NoHC),bi(1:NoHC))
       EOS_C=Dot_Product(Ni(1:NoHC),cPen(1:NoHC))
+
+      Kij(iHC_CO2,iHC_H2O)=0.2038d0 - 0.0005d0 * (Temp - 273.15d0)
+      Kij(iHC_H2O,iHC_CO2)=Kij(iHC_CO2,iHC_H2O)
 
 
       Do i=1,NoHC
@@ -161,7 +164,7 @@
          Call CalcFug(Lev,Ni,X(1),Fug_liq)
          Call CalcFug(Lev,Ni,X(3),Fug_gas)
 
-         Write(*,*)Fug_Liq,Fug_gas
+       !  Write(*,*)Fug_Liq,Fug_gas
 
 
          If (GibbsE(Ni,Fug_liq).LE.GibbsE(Ni,Fug_gas)) Then
@@ -206,7 +209,6 @@
 ! Local variables
    Double Precision n,nRT,Tred,Vgas,Vliq
    Double Precision Gibbs_Liq,Gibbs_Gas,ZF_liq,ZF_gas,Fug_liq(NoHC),Fug_gas(NoHC)
-   Integer i
 
 !--Start------------------------------------------------------
    n=sum(Ni)
@@ -389,8 +391,7 @@
    Implicit None
 
 ! Call variables
-   Integer Phase,Lev
-   Double Precision Ni(NoHC),n,ZF,nRT,BB,AA,RR,SS,TT,X(3)
+   Double Precision Ni(NoHC),n,nRT,BB,AA,RR,SS,TT,X(3)
    Integer J
 !--Start------------------------------------------------------
    n=sum(Ni)

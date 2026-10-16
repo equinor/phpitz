@@ -67,7 +67,7 @@
     },
     "N2O4": {
       "feed_mol": 0.0,
-      "equil_mol": 0.01444508,
+      "equil_mol": 0.01371411,
       "equil_ppm": 0.0144
     },
     "NH4HSO4": {
@@ -104,9 +104,9 @@
   "aqueous_phase": {
     "ph": -1.09,
     "water_mass_kg": 0.4946,
-    "water_activity": 0.008107,
+    "water_activity": 0.009454,
     "h2so4_wt_pct": 94.5592,
-    "hno3_wt_pct": 0.0044,
+    "hno3_wt_pct": 0.0037,
     "nh3_wt_pct": 0.0017,
     "co2_wt_pct": 0.2767
   }

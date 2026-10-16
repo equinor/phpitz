@@ -34,10 +34,9 @@
    Double Precision  N_aq(NoAq)
    Common /CN_Aq /N_Aq
 
-   Double Precision pH,Tc
+   Double Precision pH
 
 ! Local variables
-   Integer i
 !--Start---------------------------------------------------------------------
  !  If (LOG) Write(LogFileCalc,*)'Calling SetPTVar'
 
@@ -78,7 +77,6 @@
    Double Precision Ni(NoHC)
 
 ! Local variables
-   Integer i
 !--Start---------------------------------------------------------------------
 
 
@@ -176,10 +174,10 @@
    Double Precision pH
 
 ! Local variables
-   Integer ItNo,i,j,k,m, NGasSolub
-   Double Precision Aqg_OLD(NoAq), f , yH2O, yH2SO4, yHNO3, NH2O, ntH2O, f2,nmove, pHOld,ntH2SO4, nH2SO4, ntHNO3, nHNO3
+   Integer ItNo, i, j, m, NGasSolub
+   Double Precision Aqg_OLD(NoAq), f, f2, pHOld
 
-   Double Precision ncH2O, ncH2SO4,MaxDiff,diff
+   Double Precision MaxDiff, diff
 
    Double Precision ytar(10), ntar(10),nmov(10)
    Integer iHC(10)
@@ -311,12 +309,12 @@
       N_Aq(iAq_HNO3) =HCN(PhAq,iHC_HNO3)
       N_Aq(iAq_NH3)  =HCN(PhAq,iHC_NH3)
 
-    !  Write(*,'(I5,4e15.5)')j,ytar(1),ytar(4), ntar(1),ntar(4)
+     ! Write(*,'(I5,5F15.5)')j,nmov(1), HCN(0,iHC_H2O), HCN(PhGas,iHC_H2O), HCN(PhAq,iHC_H2O), ntar(1)
 
 
       If (j.GT.100) then   ! Minimum iteration before routine is alowed to end
 
-         If (nmov(1) .LT. HCN(PhGas,iHC_H2O)*1.d-6  .AND. nmov(1) .LT. HCN(PhAq,iHC_H2O)*1.d-6  ) Then
+         If (abs(nmov(1)) .LT. HCN(PhGas,iHC_H2O)*1.d-6  .AND. abs(nmov(1)) .LT. HCN(PhAq,iHC_H2O)*1.d-6  ) Then
             Goto 250
          EndIf
 

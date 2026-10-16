@@ -16,11 +16,9 @@ MODULE HC
    Integer, Parameter :: PhDisoc = 3
    Integer, Parameter :: Phases  = 3
 
-   Integer PseudoStart
 
    Double Precision HCN(0:Phases,0:NoHC)       ! Total molerate of HC-components
 
-   Double Precision HCN1(0:NoHC),HCN2(0:NoHC)
 
     ! ManualUpdate update liste if new components are added
    Integer, Parameter :: iHC_CO2=1
@@ -40,11 +38,7 @@ MODULE HC
    Integer, Parameter :: iHC_NH4HSO4=15
 
 
-   Character HCNames(NoHC)*15
-   Character CompNames(NoComp)*15
 
-   Double Precision HCMw(NoHC)
-   Integer HCIsSolvent(NoHC),HCType(NoHC)
 
 
 
@@ -57,7 +51,6 @@ MODULE HC
    Double Precision Zfact(0:3),FugCoef(0:3,NoHC)
    Double PRecision HCy(NoHC),Fugy(NoHC)  ! Contains y and fugcoef to be used for Henrys law calc. Gas for single gas and 2-phase. Liq when liq only.
 
-   Double Precision MwAvg(0:2),PhaseVol(0:2),PhaseDens(0:2)
 
 
    End MODULE HCprop

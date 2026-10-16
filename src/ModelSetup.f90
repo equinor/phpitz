@@ -71,7 +71,6 @@
 
 ! Local variables
 
-      Character Dummy*25
       Integer i,NAqSpecies,SpecNo
 !-----Start-------------------------------------------------------------------
 

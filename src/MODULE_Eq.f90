@@ -83,7 +83,7 @@ MODULE Eq
    Double Precision Eq_V_Par(NoEq,8)
    Double Precision Eq_K_Par(NoEq,8)
    Double Precision Eq_IS_Par(NoEq,2)
-   Double Precision Eq_dV(NoEq),Eq_dVolm(NoEq)
+   Double Precision Eq_dVolm(NoEq)
    Integer          SaltINEq(NoEq)                ! Which saltNo that is in eq. zero if no salt
 
 ! Solvent parameters

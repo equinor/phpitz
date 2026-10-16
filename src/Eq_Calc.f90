@@ -41,7 +41,7 @@
 
 ! Local variables
       Integer i,EqN,Range
-      Double Precision T,dV,dK,Rcm,RT,Pcorr,Pg,Pgsat,T_Low,T_Hi,tc,j
+      Double Precision T,dV,dK,Rcm,RT,Pcorr,Pg,Pgsat,T_Low,T_Hi,tc
 
 !----Start-------------------------------------------------------------------
       T=Temp
@@ -180,7 +180,7 @@
 
 
 ! Local variables
-   Integer EqN,j,ion,nyx,SaltNo
+   Integer EqN
 
 !-Start----------------------------------------------------------------------
 

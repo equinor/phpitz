@@ -20,13 +20,13 @@ MODULE EOS
 
 ! Pure component parameters
       Character CompName(NoHC)*10
-      Double Precision Pc(NoHC),Tc(NoHC),Acent(NoHC),Mw(NoHC),Dens(NoHC),CPen(NoHC),Zcrit(NoHC),Vcrit(NoHC)
+      Double Precision Pc(NoHC),Tc(NoHC),Acent(NoHC),Mw(NoHC),Dens(NoHC),CPen(NoHC)
 
 ! Binary interaction parameters
       Double Precision Kij(NoHC,NoHC)
 
 ! Calculated EOS variables
-      Double Precision Omega_A,Omega_B,Omega_Cvpt
+      Double Precision Omega_A,Omega_B
       Double Precision ai(NoHC),bi(NoHC),EOSmi(NoHC),Cvpti(NoHC)
 
 ! EOS variables
@@ -46,11 +46,9 @@ MODULE EOS
       Double Precision F
       Double Precision dF_dni(NoHC),d2F_dninj(NoHC,NoHC)
 
-      Double Precision dF_dT, d2F_dTT
       Double Precision dF_dV, d2F_dVV
 
-      Double Precision d2F_dVdT
 
-      Double Precision d2F_dnidT(NoHC), d2F_dnidV(NoHC)
+      Double Precision d2F_dnidV(NoHC)
 
 End MODULE F_funcs

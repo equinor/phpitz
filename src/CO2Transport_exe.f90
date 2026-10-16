@@ -41,14 +41,14 @@
 
    Double Precision pH, Gref(NoComp)
 ! Local variables
-   Integer :: i,j, k, N, ProfileType , NCases, iHC, NRxInput, ResFileNum, Phase
+   Integer :: i, k, N, ProfileType, NCases, iHC, ResFileNum, Phase
 
    Character :: InputFileName*256,MainPath*256
-   Double Precision :: InpN(NoComp,500),InpFug(NoComp),InpLiqN(NoComp),Paq, NGas(NoCOmp),NTOT, Tcalc(10),  GasbeforepH(NoHC), Tcinp, AllComp(NoComp), ProfileVar(20)
+   Double Precision :: InpN(NoComp,500), Paq, NGas(NoCOmp), NTOT, GasbeforepH(NoHC), AllComp(NoComp)
 
    Double Precision :: MultiCaseRes(NoComp,500),MultiCaseWat(10,500)
 
-   Double Precision :: Results(50,500),PT(2,500), Inb(10), Aqmass , GasMass, mH2SO4, mHNO3, mNH3, mCO2
+   Double Precision :: Results(50,500), PT(2,500), Aqmass, GasMass, mH2SO4, mHNO3, mNH3, mCO2
 !-Start----------------------------------------------------------------------
    AllComp=0.d0 ; MultiCaseRes=0.d0 ; MultiCaseWat=0.d0
 
@@ -233,15 +233,17 @@
 
       If (CalcOptions(4).EQ.1) Then
 
+
          HCN=0.d0
          Do i=1,NoHC
-            HCN(0,i)=NGas(i) !+ InpLiqN(i)
-
+            HCN(0,i)=NGas(i)
          EndDo
          HCN(0,0)=sum(HCN(0,1:NoHC))
 
 
-         IF (HCN(PhTot,iHC_H2O).GT.0.d0 .AND. (HCN(PhTot,iHC_H2SO4) + HCN(PhTot,iHC_HNO3) + HCN(PhTot,iHC_NH3)).GT.0.d0) Then
+       !  IF (HCN(PhTot,iHC_H2O).GT.0.d0 .AND. (HCN(PhTot,iHC_H2SO4) + HCN(PhTot,iHC_HNO3) + HCN(PhTot,iHC_NH3)).GT.0.d0) Then
+
+         IF (HCN(PhTot,iHC_H2O).GT.0.d0 ) Then
 
 
             ! Put water in water phase
@@ -281,7 +283,6 @@
 
 
                NGas(1:NoHC)=HCN(PhGas,1:NoHC)
-
 
 
                Phase=0
