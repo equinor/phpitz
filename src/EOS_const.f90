@@ -30,8 +30,8 @@
       Double Precision EOSmfunc
 
 !--Local variables
-      Integer i,j
-      Double Precision RT,RTc,Eksp
+      Integer i
+      Double Precision RTc
       Double Precision aci(NoHC)
 
 !--Start---------------------------------------------------------------------

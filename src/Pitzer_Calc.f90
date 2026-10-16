@@ -57,7 +57,7 @@
       Implicit None
 
 ! Local variables
-      Double Precision sqrI,N
+      Double Precision N
 !-----Start-------------------------------------------------------------------
 
       N=1.d0 + Debye_b*sqrIS   ! Precalc of expression usedseveral times
@@ -80,7 +80,7 @@
       Implicit None
 
 ! Functions
-      Double PRecision BMX,Phi,CMX,E_Theta,E_ThetaP,J
+      Double PRecision BMX,Phi,CMX
 
    Logical OnlyDebye
    Common /COnlyDebye / OnlyDebye
@@ -142,7 +142,7 @@
       Implicit None
 
 ! Functions
-      Double Precision BMX, CMX,Phi,E_ThetaP, g
+      Double Precision BMX, CMX, Phi
 
    Logical OnlyDebye
    Common /COnlyDebye / OnlyDebye
@@ -151,7 +151,6 @@
       Integer M,IndxM,a,Indxa,c,Indxc,ap,Indxap,n,Indxn
       Double PRecision SumBZC,SumPhi,SumPsi,SumL,SumLL
 
-      Double Precision x1,x2
 !-----Start-------------------------------------------------------------------
 
 

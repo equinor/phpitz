@@ -38,14 +38,9 @@ MODULE Aqua
 
 
 ! Variables
-   Double Precision AqN(NoAq)             ! Total molerate (mole/d) of aqueous species, for those were mass balance is defined
    Double Precision Aqm(NoAq)             ! Concentration of aqueous species in molality (mole/kg solvent)
-   Double Precision AqP(NoAq)             ! Molerate of precipitated species (mole/d)
    Double Precision Aqg(NoAq)             ! Activity coefficients in aqueous phase. For water/MEG/EtOH etc it is activity.
    Double Precision Solvent               ! Amount of solvent in aqueous phase (kg)
-   Double Precision AQN1(NoAq),AqN2(NoAq),AqNi(1:10,NoAq)
-   Double Precision Aq_IS,Aq_TDS,Aq_EN,Aq_Dens
-   Double Precision AqNT
 
 
 !! Solvent parameters

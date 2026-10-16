@@ -99,7 +99,7 @@ module ReactEquil
 !======================================================================
    subroutine setupProblem(AllComp)
       Real(dP) :: AllComp(ncomp)
-      Integer i,j
+      Integer i
 
       ! Diagnostic-output flag from input file: UserChoices(1)=1 -> print
       ! everything (default), UserChoices(1)=0 -> stay silent.
@@ -413,7 +413,7 @@ module ReactEquil
     real(dp) :: maxRes, dir, mxL, sLim
     real(dp) :: crossDamp, NGasSave(MAXCOMP), ssr0, ssr1, alpha
     logical :: singular
-    integer :: nFail, phase
+    integer :: nFail
     real(dp) :: diagBoost
     ! Best-so-far tracking for robust recovery
     real(dp) :: bestRes, NGasBest(MAXCOMP), maxResPre

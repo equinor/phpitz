@@ -159,6 +159,7 @@
     Real(dp) :: lam(nelem)           ! Lagrange multipliers (J/mol)
     Real(dp) :: Ntot_gas, RT
     Real(dp) :: Gtot_curr
+    Real(dp) :: total_gibbs          ! function (in this file)
     Real(dp) :: max_F, max_F_old, damping
     Real(dp) :: max_dw
     Integer  :: iter, i, j, k, gi, gj, info

@@ -98,7 +98,6 @@
    Use EOS
    Implicit None
 
-   Double Precision Nc(NoHC)
    Integer i,j
 ! Local variables
 !--Start----------------------------------------------------

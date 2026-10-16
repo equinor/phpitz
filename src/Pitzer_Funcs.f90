@@ -141,7 +141,6 @@
       Double Precision E_Theta,E_ThetaP
 
 ! Local variables
-      Double Precision alpha1,alpha2,x1,x2
       Integer zi,zj
 !-----Start-------------------------------------------------------------------
 

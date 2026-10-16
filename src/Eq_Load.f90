@@ -24,9 +24,10 @@
       Use Eq
       Use ErrMSGS
       Use Aqua
+      Implicit None
 
 ! Local variables
-      Integer N,k,j,z
+      Integer N,k,j,z,i
 !-----Start-------------------------------------------------------------------
 
       Eq_Type   =0
