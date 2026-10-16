@@ -217,7 +217,7 @@ async def calculate(simulationRequest: SimulationRequest):
                     temperature=data["temperature"],
                     reactive=int(data["reactive"]),
                     solubility=int(data["solubility"]),
-                    cond_factor=int(data["cond_factor"]),
+                    cond_factor=data["cond_factor"],
                 )
             )
 

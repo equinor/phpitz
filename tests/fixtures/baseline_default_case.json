@@ -1,0 +1,113 @@
+{
+  "phase_reactions": {
+    "CO2": {
+      "feed_mol": 999959.0,
+      "equil_mol": 999959.0,
+      "equil_ppm": 999956.3987
+    },
+    "H2O": {
+      "feed_mol": 5.0,
+      "equil_mol": 12.61578,
+      "equil_ppm": 12.6157
+    },
+    "N2": {
+      "feed_mol": 0.0,
+      "equil_mol": 0.0,
+      "equil_ppm": 0.0
+    },
+    "O2": {
+      "feed_mol": 5.0,
+      "equil_mol": 8.03484e-05,
+      "equil_ppm": 0.0001
+    },
+    "H2S": {
+      "feed_mol": 5.0,
+      "equil_mol": 7.140498e-05,
+      "equil_ppm": 0.0001
+    },
+    "NO": {
+      "feed_mol": 5.0,
+      "equil_mol": 7.381761,
+      "equil_ppm": 7.3817
+    },
+    "NO2": {
+      "feed_mol": 5.0,
+      "equil_mol": 7.573165,
+      "equil_ppm": 7.5731
+    },
+    "SO2": {
+      "feed_mol": 5.0,
+      "equil_mol": 10.12433,
+      "equil_ppm": 10.1243
+    },
+    "H2SO4": {
+      "feed_mol": 5.0,
+      "equil_mol": 4.875596,
+      "equil_ppm": 4.8756
+    },
+    "HNO3": {
+      "feed_mol": 5.0,
+      "equil_mol": 0.01560012,
+      "equil_ppm": 0.0156
+    },
+    "S8": {
+      "feed_mol": 1.0,
+      "equil_mol": 1.0,
+      "equil_ppm": 1.0
+    },
+    "NH3": {
+      "feed_mol": 0.0,
+      "equil_mol": 0.0005,
+      "equil_ppm": 0.0005
+    },
+    "N2O": {
+      "feed_mol": 0.0,
+      "equil_mol": 8.4035e-05,
+      "equil_ppm": 0.0001
+    },
+    "N2O4": {
+      "feed_mol": 0.0,
+      "equil_mol": 0.01444508,
+      "equil_ppm": 0.0144
+    },
+    "NH4HSO4": {
+      "feed_mol": 0.0,
+      "equil_mol": 0.0,
+      "equil_ppm": 0.0
+    },
+    "HCHO": {
+      "feed_mol": 0.0,
+      "equil_mol": 0.0,
+      "equil_ppm": 0.0
+    },
+    "CH3CHO": {
+      "feed_mol": 0.0,
+      "equil_mol": 0.0,
+      "equil_ppm": 0.0
+    },
+    "CH3COCH3": {
+      "feed_mol": 0.0,
+      "equil_mol": 0.0,
+      "equil_ppm": 0.0
+    },
+    "HCOOH": {
+      "feed_mol": 0.0,
+      "equil_mol": 0.0,
+      "equil_ppm": 0.0
+    },
+    "CH3COOH": {
+      "feed_mol": 0.0,
+      "equil_mol": 0.0,
+      "equil_ppm": 0.0
+    }
+  },
+  "aqueous_phase": {
+    "ph": -1.09,
+    "water_mass_kg": 0.4946,
+    "water_activity": 0.008107,
+    "h2so4_wt_pct": 94.5592,
+    "hno3_wt_pct": 0.0044,
+    "nh3_wt_pct": 0.0017,
+    "co2_wt_pct": 0.2767
+  }
+}

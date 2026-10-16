@@ -11,6 +11,13 @@ RUN cd src && \
     cd build && \
     cmake -DCMAKE_Fortran_COMPILER=ifx -DCMAKE_EXE_LINKER_FLAGS="-qmkl" /work && \
     make
+# Note: production builds with Intel's ifx, which is lenient about some
+# Fortran issues that other compilers (e.g. gfortran, used for local/CI
+# testing) reject outright - e.g. ifx silently truncates a fractional
+# value read into an Integer in datafiles/Reactions.dat, and tolerates an
+# implicit-typing edge case in src/GibbsSolver.f90 that gfortran errors on.
+# Tests account for these differences rather than assuming identical
+# compiler behavior; see tests/conftest.py.
 
 # add compiled program to path
 ENV PATH="/work/src/build:$PATH"

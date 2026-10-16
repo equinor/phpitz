@@ -1,0 +1,48 @@
+name: Tests
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container:
+      image: intel/fortran-essentials
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache apt packages
+        uses: actions/cache@v4
+        with:
+          path: /var/cache/apt/archives
+          key: ${{ runner.os }}-apt-python3.12
+
+      - name: Install Python (matches Dockerfile)
+        run: |
+          apt-get update
+          apt-get install -y software-properties-common
+          add-apt-repository -y ppa:deadsnakes/ppa
+          apt-get update
+          apt-get install -y python3.12 python3.12-venv python3-pip
+
+      - name: Create virtualenv
+        run: python3.12 -m venv .venv
+
+      - name: Cache pip packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('tests/requirements.txt') }}
+
+      - name: Install Python dependencies
+        run: .venv/bin/pip install -r tests/requirements.txt
+
+      - name: Run tests
+        run: .venv/bin/python -m pytest tests/ -v
